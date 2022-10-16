@@ -1,11 +1,13 @@
 <template>
 <h3 class="app_sidebar__header">Добавленные работы</h3>
 <ul class="works_list">
-  <works-list-item
-    v-for="(work, index) in works"
-    :work="work"
-    :index="index"
-  ></works-list-item>
+  <el-scrollbar always max-height="calc(100vh - 70px - 40px - 37px - 25px - 42px - 24px)">
+    <works-list-item
+      v-for="(work, index) in works"
+      :work="work"
+      :index="index"
+    ></works-list-item>
+  </el-scrollbar>
 </ul>
 </template>
 

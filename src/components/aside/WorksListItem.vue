@@ -2,11 +2,12 @@
 <li>
   <el-card
     shadow="hover"
+    class="work-list-item__wrapper"
     :body-style="{ padding: '10px' }"
   >
   <div class="work-list-item__body">
     <div class="work-list-item__name">
-      {{ work.set.name }}
+      {{ work.set.title }}
     </div>
     <div class="work-list-item__amount">
       <span
@@ -26,7 +27,7 @@
         {{ work.set.unit }}
       </span>
     </div>
-    <div class="work-list-item__options">
+    <div class="work-list-item__delete_btn">
       <el-popconfirm
         @confirm="onConfirmDelete"
         title="Удалить эту работу?"
@@ -82,40 +83,56 @@ const onConfirmDelete = () => {
 </script>
 
 <style scoped>
+.work-list-item__wrapper {
+  position: relative;
+  margin-bottom: 10px;
+  margin-right: 15px;
+}
 .work-list-item__body {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.work-list-item__body:hover .work-list-item__options {
+.work-list-item__body:hover .work-list-item__delete_btn {
   opacity: 1;
 }
 
 .work-list-item__name {
   font-size: 12px;
-  width: 65%;
   border-right: 1px #ccc solid;
 }
 
 .work-list-item__amount {
-  width: 27%;
+  width: 70px;
+  min-width: 70px;
   padding-left: 5px;
+  padding-right: 10px;
   display: flex;
   align-items: center;
   font-size: 12px;
   text-align: center;
 }
 
-.work-list-item__options {
+.work-list-item__delete_btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
   opacity: 0;
-  width: 8%;
+  height: 20px;
+  width: 20px;
+}
+
+.work-list-item__delete_btn button {
+  height: 20px;
+  width: 20px;
 }
 
 .work-list-item__amount_digit,
 .work-list-item__amount_input {
   height: 27px;
   width: 38px;
+  min-width: 38px;
   border: 1.5px transparent solid;
   border-radius: 3px;
   padding: 2px 3px;

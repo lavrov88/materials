@@ -1,4 +1,5 @@
 import type { TComputedMaterialGroup, TComputedMaterialItem } from "@/store/modules/addedWorks";
+import type { MaterialItem } from "@/store/modules/materials";
 import { computed, ref, type ComputedRef } from "vue";
 
 export const formatToMoney = (num: number) => (
@@ -10,31 +11,54 @@ export const formatFromMoney = (str: string) => (
 )
 
 export const normalizeMaterials = (materials: ComputedRef<TComputedMaterialItem[]>) => (computed(
-  () => materials.value.map(m => ({
+  () => materials.value.map((m): INormalizedMaterials => ({
     name: m.material.name,
-    amount: formatToMoney(Math.ceil(m.amount)),
+    title: m.material.title,
+    amount: Math.ceil(m.amount),
     unit: m.material.unit,
-    price: m.material.price,
+    price: formatToMoney(m.material.price),
     totalPrice: formatToMoney(Math.ceil(m.amount) * m.material.price)
 }))))
 
-export const normalizeGroupedMaterials = (groups: ComputedRef<TComputedMaterialGroup[]>) => (computed(
-  () => groups.value.map(g => ({
-    name: g.name,
-    unit: g.unit,
-    amount: formatToMoney(Math.ceil(g.amount)),
-    price: g.price,
-    totalPrice: g.totalPrice,
-    materials: g.materials
-}))))
+export interface INormalizedMaterials {
+  name: string
+  title: string
+  amount: number
+  unit: string
+  price: string
+  totalPrice: string
+}
 
-export const calcAllMaterialsPrice = (
-  normalizedMaterials: ReturnType<typeof normalizeMaterials>
-) => (computed(() => (
-  formatToMoney(normalizedMaterials.value.reduce(
-    (sum, current) => sum + formatFromMoney(current.totalPrice),
-    0
-  ))
-)
-))
+export const normalizeGroupedMaterials = (groups: ComputedRef<TComputedMaterialGroup[]>) => (computed(
+  () => groups.value.map((g): INormalizedGroupedMaterials => {
+    const materials = g.materials.map(m => ({
+      material: m.material,
+      amount: m.amount,
+      totalPrice: formatToMoney(m.totalPrice)
+    }))
+
+    return {
+      title: g.title,
+      unit: g.unit,
+      amount: Math.ceil(g.amount),
+      price: formatToMoney(g.price),
+      totalPrice: formatToMoney(g.totalPrice),
+      materials: materials
+    }
+  })))
+
+export interface INormalizedGroupedMaterials {
+  title: string
+  unit: string
+  amount: number
+  price: string
+  totalPrice: string
+  materials: IMaterialsFromGroup[]
+}
+
+export interface IMaterialsFromGroup {
+  material: MaterialItem,
+  amount: number,
+  totalPrice: string
+}
 

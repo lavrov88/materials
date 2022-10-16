@@ -3,7 +3,8 @@ import type { MaterialId } from "./materials"
 
 class SetsState {
   floorWaterproofing = {
-    name: 'Устройство рулонной гидроизоляции',
+    name: 'floorWaterproofing',
+    title: 'Устройство рулонной гидроизоляции',
     unit: 'м2',
     type: {
       name: 'floors',
@@ -15,7 +16,8 @@ class SetsState {
     ]
   }
   floorWarming50 = {
-    name: 'Утепление пола пенополистиролом 50 мм',
+    name: 'floorWarming50',
+    title: 'Утепление пола пенополистиролом 50 мм',
     unit: 'м2',
     type: {
       name: 'floors',
@@ -29,7 +31,8 @@ class SetsState {
     ]
   }
   floorWarming100 = {
-    name: 'Утепление пола пенополистиролом 100 мм',
+    name: 'floorWarming100',
+    title: 'Утепление пола пенополистиролом 100 мм',
     unit: 'м2',
     type: {
       name: 'floors',
@@ -43,7 +46,8 @@ class SetsState {
     ]
   }
   floorWarming101 = {
-    name: 'Утепление пола пенополистиролом 100 мм',
+    name: 'floorWarming101',
+    title: 'Утепление пола пенополистиролом 100 мм',
     unit: 'м2',
     type: {
       name: 'floors',
@@ -57,7 +61,8 @@ class SetsState {
     ]
   }
   floorWarming102 = {
-    name: 'Утепление пола пенополистиролом 100 мм',
+    name: 'floorWarming102',
+    title: 'Утепление пола пенополистиролом 100 мм',
     unit: 'м2',
     type: {
       name: 'floors',
@@ -71,7 +76,8 @@ class SetsState {
     ]
   }
   floorWarming103 = {
-    name: 'Утепление пола пенополистиролом 100 мм',
+    name: 'floorWarming103',
+    title: 'Утепление пола пенополистиролом 100 мм',
     unit: 'м2',
     type: {
       name: 'floors',
@@ -85,7 +91,8 @@ class SetsState {
     ]
   }
   floorWarming104 = {
-    name: 'Утепление пола пенополистиролом 100 мм',
+    name: 'floorWarming104',
+    title: 'Утепление пола пенополистиролом 100 мм',
     unit: 'м2',
     type: {
       name: 'floors',
@@ -99,7 +106,8 @@ class SetsState {
     ]
   }
   wallWarming100 = {
-    name: 'Утепление стен пенополистиролом 100 мм',
+    name: 'wallWarming100',
+    title: 'Утепление стен пенополистиролом 100 мм',
     unit: 'м2',
     type: {
       name: 'walls',
@@ -154,7 +162,8 @@ export interface SetItemType {
 }
 
 export interface SetItem {
-  name: string
+  name: SetKey
+  title: string
   unit: string
   type: SetItemType
   materials: Array<SetMaterials>

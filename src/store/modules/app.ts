@@ -1,18 +1,32 @@
 import { Getters, Mutations, Actions, Module, createComposable } from 'vuex-smart-module'
 
 class AppState {
-  updatesCounter = 0
+  optionsAreOpen = false
+  mainTable = {
+    materialsAreGrouped: false
+  }
 }
 
 class AppGetters extends Getters<IAppState> {
-  get updatesCounter() {
-    return this.state.updatesCounter
+  get optionsAreOpen() {
+    return this.state.optionsAreOpen
+  }
+  get materialsAreGrouped() {
+    return this.state.mainTable.materialsAreGrouped
   }
 }
 
 class AppMutations extends Mutations<IAppState> {
-  incrementCounter() {
-    this.state.updatesCounter++
+  toggleOptions() {
+    this.state.optionsAreOpen = !this.state.optionsAreOpen
+  }
+  toggleGroupedMaterials(payload?: boolean) {
+    let option = this.state.mainTable.materialsAreGrouped
+    if (payload === undefined) {
+      this.state.mainTable.materialsAreGrouped = !option
+    } else {
+      this.state.mainTable.materialsAreGrouped = payload
+    }
   }
 }
 
@@ -26,7 +40,8 @@ export const useApp = createComposable(app)
 export default app
 
 export interface IAppState {
-  updatesCounter: number
+  optionsAreOpen: boolean
+  mainTable: {
+    materialsAreGrouped: boolean
+  }
 }
-
-export type MaterialId = 170040 | 139532

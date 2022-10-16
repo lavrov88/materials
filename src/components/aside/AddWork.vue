@@ -30,26 +30,13 @@
           >
             <div class="add_work_menu_item">
               <div class="add_work_menu_item__title">
-                {{ set.name }}
+                {{ set.title }}
               </div>
-              <add-work-input
-                v-if="activeSet === index"
+              <add-work-controls
+                v-if="activeSet === index && addWorkDialogIsOpen"
                 :unit="set.unit"
-              ></add-work-input>
-              <!-- <div v-if="activeSet === index" class="add_work_menu_item__controls">
-                <el-input
-                  :ref="el => { if (el) addWorkValueInputs[index] = el }"
-                  class="add_work_menu_item__amount"
-                  placeholder="0"
-                  v-model="newWorkValue"
-                />
-                <span class="add_work_menu_item__amount_unit">{{ set.unit }}</span>
-                <el-button
-                  type="primary"
-                >
-                  Добавить
-                </el-button>
-              </div> -->
+                @added="onWorkAdded"
+              ></add-work-controls>
             </div>
           </el-menu-item>
         </el-menu>
@@ -67,9 +54,10 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, ref, type Ref } from 'vue';
 import { useSets } from '@/store/modules/sets';
-import { computed, onBeforeUpdate, onUpdated, ref, watch, type Ref } from 'vue';
-import AddWorkInput from './AddWorkInput.vue';
+import { useWorks } from '@/store/modules/addedWorks';
+import AddWorkControls from './AddWorkControls.vue';
 
 const addWorkDialogIsOpen = ref(false)
 
@@ -90,30 +78,34 @@ const onSetSelected = (e: any) => {
   activeSet.value = +e.index
 }
 
-// let addWorkValueInputs: Ref<any[]> = ref([])
-// onUpdated(() => {
-//   addWorkValueInputs = ref([])
-// })
-// watch(activeSet, () => {
-//   if (activeSet.value !== null) {
-//     const el = addWorkValueInputs.value[activeSet.value].ref
-//     setTimeout(() => {
-//       el.focus()
-//       el.select()
-//     }, 300);
-//   }
-// })
-// onBeforeUpdate(() => {
-//   addWorkValueInputs.value = []
-// })
-// const newWorkValue = ref(0)
+const addedWorks = useWorks()
+const onWorkAdded = (amount: Ref<number>) => {
+  if (activeSet.value !== null) {
+    addedWorks.dispatch('addWork', {
+      setKey: currentSets.value[activeSet.value].name,
+      amount: amount.value
+    })
+    setTimeout(() => {
+      activeSet.value = null
+      addWorkDialogIsOpen.value = false
+    });
+  }
+}
 </script>
 
 <style>
-.add_work_dialog {
+.sidebar_add_work {
+  margin-bottom: 10px;
+}
+
+.el-dialog.add_work_dialog {
   max-height: 80vh;
   overflow: hidden;
   border-radius: 10px;
+}
+
+.add_work_dialog .el-dialog__body {
+  padding: 5px 20px 30px;
 }
 
 .add_work_menu_item {

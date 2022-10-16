@@ -29,9 +29,10 @@ export default defineComponent({
   margin: 0 auto;
 }
 .app_data {
-  width: 860px;
+  width: 100%;
+  height: 100vh;
   max-height: 100vh;
-  margin-left: 30px;
-  max-width: 870px;
+  overflow: hidden;
+  padding: 0 10px 20px 10px;
 }
 </style>

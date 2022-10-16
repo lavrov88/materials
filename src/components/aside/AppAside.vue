@@ -1,11 +1,15 @@
 <template>
 <aside class="app_sidebar_wrapper">
-  <div class="app_sidebar_content">
-    <h5 v-if="!worksAreExist" class="app_sidebar_empty_title">
+  <div
+    class="app_sidebar_content"
+    :class="worksExist ? '' : 'empty'"
+  >
+    <h5 v-if="!worksExist" class="app_sidebar_empty_title">
       Добавленных работ ещё нет
     </h5>
-    <works-list v-if="worksAreExist"></works-list>
+    <works-list v-if="worksExist"></works-list>
     <add-work></add-work>
+    <delete-all-works v-if="worksExist"></delete-all-works>
   </div>
 </aside>
 </template>
@@ -15,21 +19,25 @@ import AddWork from './AddWork.vue'
 import WorksList from './WorksList.vue'
 import { useWorks } from '@/store/modules/addedWorks'
 import { computed } from 'vue';
+import DeleteAllWorks from './DeleteAllWorks.vue';
 
-const worksAreExist = computed(() => !!useWorks().getters.works.length)
+const worksExist = computed(() => !!useWorks().getters.works.length)
 
 </script>
 
 <style scoped>
 .app_sidebar_wrapper {
-  width: 300px;
+  width: 350px;
   height: 100vh;
   max-height: 100vh;
-  padding: 50px 0px 0px 10px;
+  flex-shrink: 0;
+  padding: 50px 20px 20px 10px;
 }
 .app_sidebar_content {
-  height: calc(100% - 20px);
+  height: 100%;
+  width: 100%;
   padding: 20px;
+  padding-right: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,8 +46,13 @@ const worksAreExist = computed(() => !!useWorks().getters.works.length)
   box-shadow: -4px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
+.app_sidebar_content.empty {
+  display: flex;
+  justify-content: center;
+}
+
 .app_sidebar_empty_title {
-  margin-top: 40px;
+  margin-top: 0;
   margin-bottom: 40px;
 }
 </style>

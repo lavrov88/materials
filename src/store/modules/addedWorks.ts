@@ -70,7 +70,7 @@ class WorksGetters extends Getters<IWorksState> {
       const workAmount = work.amount
       const workMaterials = work.set.materials
       const groupObj = {
-        name: work.set.name,
+        title: work.set.title,
         unit: work.set.unit,
         amount: workAmount,
         price: 0,
@@ -118,6 +118,10 @@ class WorkMutations extends Mutations<IWorksState> {
     this.state.works.splice(payload, 1)
   }
 
+  clearWorks() {
+    this.state.works = []
+  }
+
   changeWorkAmount(payload: IChangeWorkAmount) {
     const { index, amount } = payload
     this.state.works[index].amount = amount
@@ -159,7 +163,7 @@ export type TComputedMaterialItem = {
 }
 
 export type TComputedMaterialGroup = {
-  name: string
+  title: string
   unit: string
   amount: number
   price: number
