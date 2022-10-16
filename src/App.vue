@@ -1,19 +1,16 @@
 <template>
-<el-container>
-  <el-aside width="300px">
-    <app-aside></app-aside>
-  </el-aside>
+<div class="app_container">
+  <app-aside></app-aside>
 
-  <el-main>
+  <div class="app_data">
+    <app-header></app-header>
     <app-main></app-main>
-  </el-main>
-</el-container>
+  </div>
+</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import AppAside from './components/aside/AppAside.vue';
-import AppMain from './components/main/AppMain.vue';
 
 export default defineComponent({
   data: () => ({
@@ -23,13 +20,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.el-aside {
-  height: 100vh;
-
-  background-color:lightskyblue;
+.app_container {
+  width: 100%;
+  max-width: 1200px;
+  max-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  margin: 0 auto;
 }
-
-.el-main {
-  height: 100vh;
+.app_data {
+  width: 860px;
+  max-height: 100vh;
+  margin-left: 30px;
+  max-width: 870px;
 }
 </style>

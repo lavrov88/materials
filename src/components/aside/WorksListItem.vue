@@ -27,12 +27,18 @@
       </span>
     </div>
     <div class="work-list-item__options">
-      <el-button
-        @click="onClickDelete"
-        size="small"
-        :icon="Delete"
-        circle
-      />
+      <el-popconfirm
+        @confirm="onConfirmDelete"
+        title="Удалить эту работу?"
+        confirm-button-text="Да"
+        cancel-button-text="Нет"
+        hide-icon
+        width="180px"
+      >
+        <template #reference>
+          <el-button size="small" :icon="Delete" circle/>
+        </template>
+      </el-popconfirm>
     </div>
   </div>
   </el-card>
@@ -70,7 +76,7 @@ const onAmountChange = (e: Event) => {
   }
 }
 
-const onClickDelete = () => {
+const onConfirmDelete = () => {
   commit('deleteWork', index)
 }
 </script>
