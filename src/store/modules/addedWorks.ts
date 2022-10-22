@@ -1,11 +1,14 @@
-import type { Store } from 'vuex'
-import { Getters, Mutations, Actions, Module, createComposable, Context } from 'vuex-smart-module'
-import sets, { type SetKey, type SetItem } from './sets'
-import materials, { type IMaterialState, type MaterialItem } from './materials'
+import type { Store } from 'vuex';
+import { Getters, Mutations, Actions, Module, createComposable, Context } from 'vuex-smart-module';
+import sets from './sets';
+import materials from './materials';
+import type { IWorksState, IWorkItem, IComputedMaterialItem, IComputedMaterialGroup, IChangeWorkAmount, IAddWorkPayload, IWorksByTypeItem, IWorkTypeItem } from '@/types/works';
+import type { TSetsTypes } from '@/types/sets';
+import { generateId } from '@/ultils/ultils';
 
 class WorksState {
-  works = [] as WorkItem[]
-  computedMaterials = [] as TComputedMaterialItem[]
+  works = [] as IWorkItem[]
+  computedMaterials = [] as IComputedMaterialItem[]
 }
 
 class WorksGetters extends Getters<IWorksState> {
@@ -21,6 +24,20 @@ class WorksGetters extends Getters<IWorksState> {
     return this.state.works
   }
 
+  get worksByType() {
+    const workTypes = Object.keys(this.getters.sets) as TSetsTypes[]
+    const allWorks = this.getters.works
+    const worksByType = [] as IWorksByTypeItem[]
+
+    workTypes.forEach(wt => {
+      worksByType.push({
+        workType: wt,
+        works: allWorks.filter(w => w.workType === wt)
+      })
+    })
+    return worksByType
+  }
+
   get sets() {
     return this.setsContext.getters.sets;
   }
@@ -32,14 +49,18 @@ class WorksGetters extends Getters<IWorksState> {
   get computedMaterials() {
     const works = this.getters.works
     const materials = this.getters.materials
-    const computed: TComputedMaterialItem[] = []
+    const computed: IComputedMaterialItem[] = []
 
     works.forEach(work => {
       const workAmount = work.amount
       const workMaterials = work.set.materials
 
       workMaterials.forEach(wm => {
-        const materialItem = materials[wm.material]
+        const materialItem = materials.find(m => m.id === wm.material)
+        if (!materialItem) {
+          return
+        }
+
         const unitAmount = wm.amount
         const totalAmount = Math.ceil(unitAmount * workAmount)
         const totalPrice = totalAmount * materialItem.price
@@ -57,45 +78,61 @@ class WorksGetters extends Getters<IWorksState> {
         }
       })
     })
+    computed.sort((a, b) => a.totalPrice < b.totalPrice ? 1 : -1)
 
     return computed
   }
 
   get computedMaterialsGrouped() {
-    const works = this.getters.works
-    const materials = this.getters.materials
-    const computed: TComputedMaterialGroup[] = []
+    const worksByType = this.getters.worksByType
 
-    works.forEach(work => {
-      const workAmount = work.amount
-      const workMaterials = work.set.materials
-      const groupObj = {
-        title: work.set.title,
-        unit: work.set.unit,
-        amount: workAmount,
-        price: 0,
-        totalPrice: 0,
-        materials: [] as TComputedMaterialItem[]
+    const materials = this.getters.materials
+    const computed: IWorkTypeItem[] = []
+
+    worksByType.forEach(wbt => {
+      const { works, workType } = wbt
+      const workTypeObj = {
+        workType,
+        works: [] as IComputedMaterialGroup[]
       }
 
-      workMaterials.forEach(wm => {
-        const materialItem = materials[wm.material]
-        const unitAmount = wm.amount
-        const totalAmount = Math.ceil(unitAmount * workAmount)
-        const totalPrice = totalAmount * materialItem.price
-        groupObj.totalPrice += totalPrice
-
-        groupObj.materials.push({
-          material: materialItem,
-          amount: totalAmount,
-          totalPrice
+      works.forEach(work => {
+        const workAmount = work.amount
+        const workMaterials = work.set.materials
+        const groupObj = {
+          title: work.set.title,
+          unit: work.set.unit,
+          amount: workAmount,
+          price: 0,
+          totalPrice: 0,
+          materials: [] as IComputedMaterialItem[]
+        }
+  
+        workMaterials.forEach(wm => {
+          const materialItem = materials.find(m => m.id === wm.material)
+          if (!materialItem) {
+            return
+          }
+  
+          const unitAmount = wm.amount
+          const totalAmount = Math.ceil(unitAmount * workAmount)
+          const totalPrice = totalAmount * materialItem.price
+          groupObj.totalPrice += totalPrice
+  
+          groupObj.materials.push({
+            material: materialItem,
+            amount: totalAmount,
+            totalPrice
+          })
         })
+  
+        groupObj.price = groupObj.amount ?
+                         Math.round(groupObj.totalPrice / groupObj.amount) :
+                         0
+        workTypeObj.works.push(groupObj)
       })
 
-      groupObj.price = groupObj.amount ?
-                       Math.round(groupObj.totalPrice / groupObj.amount) :
-                       0
-      computed.push(groupObj)
+      computed.push(workTypeObj)
     })
 
     return computed
@@ -110,30 +147,52 @@ class WorksGetters extends Getters<IWorksState> {
 }
 
 class WorkMutations extends Mutations<IWorksState> {
-  addWork(payload: WorkItem) {
+  addWork(payload: IWorkItem) {
     this.state.works.push(payload)
   }
 
-  deleteWork(payload: number) {
-    this.state.works.splice(payload, 1)
+  deleteWork(payload: string) {
+    this.state.works = this.state.works.filter(w => w.id !== payload)
   }
 
   clearWorks() {
     this.state.works = []
   }
 
+  sortWorks() {
+    this.state.works = [...this.state.works].sort((a, b) => {
+      if (a.set.sortRange > b.set.sortRange) return 1
+      if (a.set.sortRange < b.set.sortRange) return -1
+      if (a.id > b.id) return 1
+      if (a.id < b.id) return -1
+      return 0
+      // return a.set.sortRange > b.set.sortRange ? 1 : -1
+    })
+  }
+
   changeWorkAmount(payload: IChangeWorkAmount) {
-    const { index, amount } = payload
-    this.state.works[index].amount = amount
+    const { id, amount } = payload
+    const workItem = this.state.works.find(w => w.id === id)
+    if (workItem) {
+      workItem.amount = amount
+    }
   }
 }
 
 class WorksActions extends Actions<
   WorksState, WorksGetters, WorkMutations, WorksActions
 > {
-  addWork({setKey, amount}: {setKey: SetKey, amount: number}) {
-    const set = this.getters.sets[setKey]
-    this.commit('addWork', { set, amount })
+  addWork({workType, setTitle, amount}: IAddWorkPayload) {
+    const set = this.getters.sets[workType].find(set => set.title === setTitle)
+    if (set) {
+      this.commit('addWork', {
+        id: generateId(),
+        workType,
+        set,
+        amount
+      })
+      this.commit('sortWorks')
+    }
   }
 
   changeWorkAmount(payload: IChangeWorkAmount) {
@@ -150,33 +209,3 @@ const works = new Module({
 
 export const useWorks = createComposable(works)
 export default works
-
-export type IWorksState = {
-  works: WorkItem[]
-  computedMaterials: TComputedMaterialItem[]
-}
-
-export type TComputedMaterialItem = {
-  material: MaterialItem
-  amount: number
-  totalPrice: number
-}
-
-export type TComputedMaterialGroup = {
-  title: string
-  unit: string
-  amount: number
-  price: number
-  totalPrice: number
-  materials: TComputedMaterialItem[]
-}
-
-export interface WorkItem {
-  set: SetItem
-  amount: number
-}
-
-export interface IChangeWorkAmount {
-  index: number
-  amount: number
-}

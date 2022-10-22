@@ -3,7 +3,7 @@ import { Getters, Mutations, Actions, Module, createComposable } from 'vuex-smar
 class AppState {
   optionsAreOpen = false
   mainTable = {
-    materialsAreGrouped: false
+    materialsAreGrouped: true
   }
 }
 

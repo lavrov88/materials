@@ -46,7 +46,6 @@ const enterHandler = (e: KeyboardEvent) => {
 }
 
 onMounted(() => {
-  
   setTimeout(() => {
     inputEl.value.focus()
     inputEl.value.select()

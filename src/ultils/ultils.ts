@@ -1,6 +1,12 @@
-import type { TComputedMaterialGroup, TComputedMaterialItem } from "@/store/modules/addedWorks";
-import type { MaterialItem } from "@/store/modules/materials";
-import { computed, ref, type ComputedRef } from "vue";
+import type { INormalizedGroupedMaterials, INormalizedGroupedMaterialsTypes, INormalizedMaterials } from "@/types/materials";
+import type { IComputedMaterialGroup, IComputedMaterialItem, IWorkTypeItem } from "@/types/works";
+import { computed, type ComputedRef } from "vue";
+
+export const generateId = () => {
+  const dateStr = (new Date).toJSON()
+  const random = Math.random().toFixed(4).slice(2, 6)
+  return `${dateStr}-${random}`
+}
 
 export const formatToMoney = (num: number) => (
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
@@ -10,7 +16,7 @@ export const formatFromMoney = (str: string) => (
   +str.split(' ').join('')
 )
 
-export const normalizeMaterials = (materials: ComputedRef<TComputedMaterialItem[]>) => (computed(
+export const normalizeMaterials = (materials: ComputedRef<IComputedMaterialItem[]>) => (computed(
   () => materials.value.map((m): INormalizedMaterials => ({
     name: m.material.name,
     title: m.material.title,
@@ -20,17 +26,7 @@ export const normalizeMaterials = (materials: ComputedRef<TComputedMaterialItem[
     totalPrice: formatToMoney(Math.ceil(m.amount) * m.material.price)
 }))))
 
-export interface INormalizedMaterials {
-  name: string
-  title: string
-  amount: number
-  unit: string
-  price: string
-  totalPrice: string
-}
-
-export const normalizeGroupedMaterials = (groups: ComputedRef<TComputedMaterialGroup[]>) => (computed(
-  () => groups.value.map((g): INormalizedGroupedMaterials => {
+export const normalizeGroupedMaterialsWorks = (groups: IComputedMaterialGroup[]) => (groups.map((g): INormalizedGroupedMaterials => {
     const materials = g.materials.map(m => ({
       material: m.material,
       amount: m.amount,
@@ -45,20 +41,14 @@ export const normalizeGroupedMaterials = (groups: ComputedRef<TComputedMaterialG
       totalPrice: formatToMoney(g.totalPrice),
       materials: materials
     }
-  })))
+}))
 
-export interface INormalizedGroupedMaterials {
-  title: string
-  unit: string
-  amount: number
-  price: string
-  totalPrice: string
-  materials: IMaterialsFromGroup[]
-}
+export const normalizeGroupedMaterials = (workTypes: IWorkTypeItem[]) => (workTypes.map((wt): INormalizedGroupedMaterialsTypes => {
+  const workTypeTotalPrice = wt.works.reduce((sum, item) => sum + item.totalPrice, 0)
 
-export interface IMaterialsFromGroup {
-  material: MaterialItem,
-  amount: number,
-  totalPrice: string
-}
-
+  return {
+    workType: wt.workType,
+    workTypeTotalPrice: formatToMoney(workTypeTotalPrice),
+    works: normalizeGroupedMaterialsWorks(wt.works)
+  }
+}))

@@ -23,10 +23,12 @@
     </el-empty>
 
     <div v-show="allMaterialsPrice" class="materials-table">
-      <app-main-table v-show="!materialsAreGrouped">
+      <app-main-table v-if="!materialsAreGrouped">
       </app-main-table>
-      <app-main-table-grouped v-show="materialsAreGrouped">
+
+      <app-main-table-grouped v-if="materialsAreGrouped">
       </app-main-table-grouped>
+
       <div class="materials_total_price">
         Общая стоимость материалов:
         <strong>{{ allMaterialsPrice }}</strong>
@@ -41,7 +43,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useWorks } from '@/store/modules/addedWorks'
-import { formatToMoney, normalizeGroupedMaterials, normalizeMaterials } from '@/ultils/ultils';
+import { formatToMoney } from '@/ultils/ultils';
 import { useApp } from '@/store/modules/app';
 import AppMainTable from './table/Table.vue';
 import AppMainTableGrouped from './table/TableGrouped.vue';
@@ -91,8 +93,8 @@ const allMaterialsPrice = computed(() => {
 .materials_total_price {
   display: flex;
   justify-content: end;
-  padding: 30px 5px 10px;
-  color: #606266
+  padding: 0px 5px 10px;
+  color: #595b63
 }
 
 .materials_total_price strong {

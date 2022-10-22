@@ -1,8 +1,8 @@
 <template>
 <div class="app_main_block header_options">
-  <el-checkbox
+  <el-switch
     v-model="materialsAreGrouped"
-    label="Группировать материалы по видам работ"
+    active-text="Группировать материалы по видам работ"
   />
 
   <el-button
@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import { useApp } from '@/store/modules/app';
 import { Close } from '@element-plus/icons-vue'
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 const appStore = useApp()
 
 const materialsAreGrouped = computed({

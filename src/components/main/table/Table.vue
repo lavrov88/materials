@@ -1,6 +1,7 @@
 <template>
 <el-table
   :data="normalizedMaterials"
+  class="ungrouped_table"
   stripe border
 >
   <el-table-column label="Материал" header-align="center">
@@ -26,4 +27,7 @@ const normalizedMaterials = normalizeMaterials(computedMaterials)
 </script>
 
 <style>
+.ungrouped_table {
+  margin-bottom: 30px;
+}
 </style>

@@ -47,13 +47,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { WorkItem } from '@/store/modules/addedWorks'
 import { Delete } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue';
 import { useWorks } from '@/store/modules/addedWorks'
+import type { IWorkItem } from '@/types/works';
 
 interface Props {
-  work: WorkItem
+  work: IWorkItem
   index: number
 }
 const { work, index } = defineProps<Props>()
@@ -72,13 +72,14 @@ watch(amountEditIsOn, () => {
 })
 const onAmountChange = (e: Event) => {
   const amount = +(e.target as HTMLInputElement).value
+  const id = work.id
   if (typeof amount === 'number') {
-    dispatch('changeWorkAmount', { index, amount })
+    dispatch('changeWorkAmount', { id, amount })
   }
 }
 
 const onConfirmDelete = () => {
-  commit('deleteWork', index)
+  commit('deleteWork', work.id)
 }
 </script>
 
