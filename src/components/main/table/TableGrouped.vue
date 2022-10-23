@@ -7,33 +7,34 @@
   <el-table
     v-if="workType.works.length"
     :data="workType.works"
+    :size="mobile ? 'small' : 'default'"
     border
     default-expand-all
     row-class-name="grouped_row"
   >
-    <el-table-column type="expand" width="40">
+    <el-table-column type="expand" :width="mobile ? '30' : '40'">
       <template #default="props">
         <div m="4">
-          <el-table :data="props.row.materials" :show-header="false" stripe border>
-            <el-table-column width="80" />
+          <el-table :data="props.row.materials" :show-header="false" stripe border size="small">
+            <el-table-column :width="mobile ? '60' : '80'" />
             <el-table-column label="Материал" header-align="center">
               <template #default="scope">
                 <cell-material :row="scope.row.material"></cell-material>
               </template>
             </el-table-column>
-            <el-table-column label="Кол." prop="amount" width="70" align="center" />
-            <el-table-column label="Ед." prop="material.unit" width="60" align="center" />
-            <el-table-column label="Цена" prop="material.price" width="90" align="right" header-align="center" />
-            <el-table-column label="Стоим." prop="totalPrice" width="90" align="right" header-align="center" />
+            <el-table-column label="Кол." prop="amount" :width="mobile ? '60' : '70'" align="center" />
+            <el-table-column label="Ед." prop="material.unit" :width="mobile ? '50' : '60'" align="center" />
+            <el-table-column label="Цена" prop="material.price" :width="mobile ? '70' : '90'" align="right" header-align="center" />
+            <el-table-column label="Стоим." prop="totalPrice" :width="mobile ? '80' : '90'" align="right" header-align="center" />
           </el-table>
         </div>
       </template>
     </el-table-column>
-    <el-table-column :label="setNames[workType.workType]" prop="title" width="360" header-align="center" />
-    <el-table-column label="Кол." prop="amount" width="70" align="center" />
-    <el-table-column label="Ед." prop="unit" width="60" align="center" />
-    <el-table-column label="Цена" prop="price" width="90" align="right" header-align="center" />
-    <el-table-column label="Стоим." prop="totalPrice" width="90" align="right" header-align="center" />
+    <el-table-column :label="setNames[workType.workType]" prop="title" header-align="center" />
+    <el-table-column label="Кол." prop="amount" :width="mobile ? '60' : '70'" align="center" />
+    <el-table-column label="Ед." prop="unit" :width="mobile ? '50' : '60'" align="center" />
+    <el-table-column label="Цена" prop="price" :width="mobile ? '70' : '90'" align="right" header-align="center" />
+    <el-table-column label="Стоим." prop="totalPrice" :width="mobile ? '80' : '90'" align="right" header-align="center" />
   </el-table>
   <div v-if="checkTotalPriceVisibility(workType)" class="work_type_table__footer">
     Стоимость материалов по разделу
@@ -55,6 +56,7 @@ import { normalizeGroupedMaterials } from '@/ultils/ultils';
 import CellMaterial from './CellMaterial.vue';
 import setNames from '@/enums/sets'
 import type { INormalizedGroupedMaterialsTypes } from '@/types/materials';
+import { useApp } from '@/store/modules/app';
 
 const computedMaterialsGrouped = computed(() => useWorks().getters.computedMaterialsGrouped)
 const normalizedGroupedMaterials = computed(() => normalizeGroupedMaterials(computedMaterialsGrouped.value))
@@ -71,6 +73,8 @@ const checkDividerVisibility = (workType: INormalizedGroupedMaterialsTypes, idx:
   const isLastItem = idx === normalizedGroupedMaterials.value.length - 1
   return hasTotalPrice && isLastItem
 }
+
+const mobile = computed(() => useApp().getters.mobileLayout)
 </script>
 
 <style>

@@ -1,6 +1,7 @@
-const floorsSets = [
+export default  [
   {
     title: 'Устройство рулонной гидроизоляции',
+    shortName: 'rollWP',
     unit: 'м2',
     sortRange: 1000,
     materials: [
@@ -10,6 +11,7 @@ const floorsSets = [
   },
   {
     title: 'Утепление пола пенополистиролом 50 мм',
+    shortName: 'flWarm50',
     unit: 'м2',
     sortRange: 1100,
     materials: [
@@ -21,6 +23,7 @@ const floorsSets = [
   },
   {
     title: 'Утепление пола пенополистиролом 100 мм',
+    shortName: 'flWarm100',
     unit: 'м2',
     sortRange: 1110,
     materials: [
@@ -31,5 +34,3 @@ const floorsSets = [
     ]
   }
 ]
-
-export default floorsSets

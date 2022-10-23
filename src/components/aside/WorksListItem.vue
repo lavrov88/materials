@@ -100,8 +100,10 @@ const onConfirmDelete = () => {
 }
 
 .work-list-item__name {
-  font-size: 12px;
+  flex-grow: 1;
+  padding-right: 5px;
   border-right: 1px #ccc solid;
+  font-size: 12px;
 }
 
 .work-list-item__amount {

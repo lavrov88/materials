@@ -1,11 +1,13 @@
-import FloorsSets from '@/assets/data/sets/floors'
-import WallsSets from '@/assets/data/sets/walls'
+import floorsSets from '@/assets/data/sets/floors'
+import wallsSets from '@/assets/data/sets/walls'
+import ceilingsSets from '@/assets/data/sets/ceilings'
 import type { ISetsState } from '@/types/sets'
 import { Getters, Module, createComposable } from 'vuex-smart-module'
 
 export class SetsState {
-  floors = FloorsSets
-  walls = WallsSets
+  floors = floorsSets
+  walls = wallsSets
+  ceilings = ceilingsSets
 }
 
 class SetsGetters extends Getters<ISetsState> {

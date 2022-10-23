@@ -44,6 +44,9 @@ const enterHandler = (e: KeyboardEvent) => {
     onAddBtnClicked()
   }
 }
+// const outsideClickHandler = (e: MouseEvent) => {
+//   console.log(e)
+// }
 
 onMounted(() => {
   setTimeout(() => {
@@ -52,13 +55,38 @@ onMounted(() => {
     if (document.activeElement === inputEl.value.ref) {
       document.addEventListener('keydown', enterHandler)
     }
+    // document.addEventListener('click', outsideClickHandler)
+    // console.log('click on')
   });
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', enterHandler)
+  // document.removeEventListener('click', outsideClickHandler)
+  // console.log('click off')
 })
 </script>
 
 <style>
+.add_work_menu_item__controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding-left: 5px;
+  padding-right: 10px;
+  gap: 10px;
+  background-color: #fff;
+}
+
+.el-input.add_work_menu_item__amount {
+  width: 60px;
+  text-align: center;
+}
+
+.add_work_menu_item__amount_unit {
+  color: #585858;
+}
 </style>

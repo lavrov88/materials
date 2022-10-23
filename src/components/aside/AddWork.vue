@@ -8,6 +8,9 @@
 
   <el-dialog
     class="add_work_dialog"
+    @close="activeSet = null"
+    @click="handleDialogClick"
+    :width="popupWidth"
     top="10vh"
     v-model="addWorkDialogIsOpen"
     title="Выберите новый вид работы"
@@ -27,8 +30,9 @@
           <el-menu-item
             v-for="(set, index) in currentSets"
             :key="set.title"
-            @click="onSetSelected(set, index)"
             :index="'' + index"
+            @click="onSetSelected(set, index)"
+            class="add_work_menu_item_wrapper"
           >
             <div class="add_work_menu_item">
               <div class="add_work_menu_item__title">
@@ -76,6 +80,7 @@ import type { ISetItem, TSetsTypes } from '@/types/sets';
 import type { IAddWorkPayload } from '@/types/works';
 import setsNames from '@/enums/sets'
 import { ElMessage } from 'element-plus';
+import { useApp } from '@/store/modules/app';
 
 const addWorkDialogIsOpen = ref(false)
 
@@ -93,6 +98,13 @@ const activeSetTitle = ref(null as string | null)
 const onSetSelected = (set: ISetItem, index: number) => {
   activeSet.value = index
   activeSetTitle.value = set.title
+}
+
+const handleDialogClick = (e: any) => {
+  const isMenuItem = e.target.closest('.add_work_menu_item')
+  if (!isMenuItem) {
+    activeSet.value = null
+  }
 }
 
 const addedWorks = useWorks()
@@ -123,10 +135,20 @@ const afterWorkAdded = (title: string | null) => {
         duration: 2000
       })
     }
-  });
+  })
 }
 
 const dontClose = ref(false)
+
+const appStore = useApp()
+const mobile = computed(() => appStore.getters.mobileLayout)
+const tablet = computed(() => appStore.getters.tabletLayout)
+const popupWidth = computed(() => {
+  if(!tablet.value) return '60%'
+  if(!mobile.value) return '80%'
+  return '95%'
+})
+
 </script>
 
 <style>
@@ -136,6 +158,7 @@ const dontClose = ref(false)
 
 .el-dialog.add_work_dialog {
   max-height: 80vh;
+  max-width: 800px;
   overflow: hidden;
   border-radius: 10px;
 }
@@ -148,22 +171,6 @@ const dontClose = ref(false)
   width: 100%;
   display: flex;
   justify-content: space-between;
-}
-
-.add_work_menu_item__controls {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 10px;
-}
-
-.el-input.add_work_menu_item__amount {
-  width: 60px;
-  text-align: center;
-}
-
-.add_work_menu_item__amount_unit {
-  color: #585858;
 }
 
 .dialog-footer {

@@ -1,5 +1,6 @@
 import type { Store } from 'vuex';
 import { Getters, Mutations, Actions, Module, createComposable, Context } from 'vuex-smart-module';
+import app from './app';
 import sets from './sets';
 import materials from './materials';
 import type { IWorksState, IWorkItem, IComputedMaterialItem, IComputedMaterialGroup, IChangeWorkAmount, IAddWorkPayload, IWorksByTypeItem, IWorkTypeItem } from '@/types/works';
@@ -12,10 +13,12 @@ class WorksState {
 }
 
 class WorksGetters extends Getters<IWorksState> {
+  appContext!: Context<typeof app>
   setsContext!: Context<typeof sets>
   materialsContext!: Context<typeof materials>
 
   $init(store: Store<any>): void {
+    this.appContext = app.context(store)
     this.setsContext = sets.context(store)
     this.materialsContext = materials.context(store)
   }
@@ -58,6 +61,7 @@ class WorksGetters extends Getters<IWorksState> {
       workMaterials.forEach(wm => {
         const materialItem = materials.find(m => m.id === wm.material)
         if (!materialItem) {
+          console.error(`Material with id ${wm.material} was not found for set ${work.set.title}!`)
           return
         }
 
@@ -166,7 +170,6 @@ class WorkMutations extends Mutations<IWorksState> {
       if (a.id > b.id) return 1
       if (a.id < b.id) return -1
       return 0
-      // return a.set.sortRange > b.set.sortRange ? 1 : -1
     })
   }
 

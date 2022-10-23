@@ -1,8 +1,9 @@
 <template>
 <main class="materials_data_wrapper">
-  <AppMainOptions
-    v-if="optionsAreOpen"
-  ></AppMainOptions>
+  <div v-if="optionsAreOpen" class="app_main_block header_options">
+    <app-main-options>
+    </app-main-options>
+  </div>
 
   <div
     class="app_main_block materials_data"
@@ -11,6 +12,8 @@
   <el-scrollbar max-height="100%" always>
     <el-empty
       v-show="!allMaterialsPrice"
+      class="materials_data_empty"
+      :class="optionsAreOpen ? 'with_opened_options' : ''"
     >
       <template v-slot:description>
         <div class="materials_data_empty__title">
@@ -47,6 +50,7 @@ import { formatToMoney } from '@/ultils/ultils';
 import { useApp } from '@/store/modules/app';
 import AppMainTable from './table/Table.vue';
 import AppMainTableGrouped from './table/TableGrouped.vue';
+import { ElNotification } from 'element-plus';
 
 const appStore = useApp()
 const optionsAreOpen = computed(() => appStore.getters.optionsAreOpen)
@@ -62,7 +66,7 @@ const allMaterialsPrice = computed(() => {
 <style>
 .materials_data_wrapper {
   height: calc(100vh - 50px);
-  padding: 0 10px 20px 0px;
+  padding: 0 10px 20px 10px;
 }
 
 .app_main_block {
@@ -74,32 +78,49 @@ const allMaterialsPrice = computed(() => {
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
+.header_options {
+  height: 80px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 .materials_data {
   height: 100%;
   max-height: 100%;
   overflow: auto;
 }
 
-.with_opened_options {
+.materials_data.with_opened_options {
   height: calc(100% - 100px);
   max-height: calc(100% - 100px);
 }
 
 .materials-table {
-  max-width: 710px;
+  max-width: 95%;
   margin: 0 auto;
 }
 
 .materials_total_price {
   display: flex;
   justify-content: end;
+  align-items: center;
   padding: 0px 5px 10px;
   color: #595b63
 }
 
 .materials_total_price strong {
   margin: 0 5px;
+  flex-shrink: 0;
 }
+
+.materials_data_empty {
+  height: calc(100vh - 180px);
+}
+
+.materials_data_empty.with_opened_options {
+  height: calc(100vh - 230px);
+}
+
 
 .materials_data_empty__title {
   color: #606266;

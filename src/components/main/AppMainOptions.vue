@@ -1,11 +1,13 @@
 <template>
-<div class="app_main_block header_options">
+<div class="options_content">
   <el-switch
     v-model="materialsAreGrouped"
     active-text="Группировать материалы по видам работ"
+    :loading="materialsAreGroupedLoading"
   />
 
   <el-button
+    v-if="!tablet"
     class="options_close_btn"
     @click="onCloseOptionsClick"
     text small circle :icon="Close"
@@ -17,14 +19,21 @@
 import { useApp } from '@/store/modules/app';
 import { Close } from '@element-plus/icons-vue'
 import { computed, ref } from 'vue';
-const appStore = useApp()
 
+const appStore = useApp()
+const tablet = computed(() => appStore.getters.tabletLayout)
+
+const materialsAreGroupedLoading = ref(false)
 const materialsAreGrouped = computed({
   get() {
     return appStore.getters.materialsAreGrouped
   },
   set(val) {
-    appStore.commit('toggleGroupedMaterials', val)
+    materialsAreGroupedLoading.value = true
+    setTimeout(() => {
+      appStore.commit('toggleGroupedMaterials', val)
+      materialsAreGroupedLoading.value = false
+    })
   }
 })
 
@@ -33,11 +42,8 @@ const onCloseOptionsClick = () => {
 }
 </script>
 
-<style scoped>
-.header_options {
-  height: 80px;
-  padding: 20px;
-  margin-bottom: 20px;
+<style>
+.options_content {
   position: relative;
   display: flex;
   align-items: center;

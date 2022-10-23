@@ -1,4 +1,5 @@
 export default {
   floors: 'Полы',
-  walls: 'Стены'
+  walls: 'Стены',
+  ceilings: 'Потолки'
 }
