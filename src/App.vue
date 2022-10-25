@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
   height: 100vh;
   max-height: 100vh;
   flex-shrink: 0;
-  padding: 50px 10px 20px 10px;
+  padding: 50px 0px 20px 20px;
 }
 
 .app_sidebar_inner {

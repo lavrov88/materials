@@ -16,7 +16,7 @@
       <template #default="props">
         <div m="4">
           <el-table :data="props.row.materials" :show-header="false" stripe border size="small">
-            <el-table-column :width="mobile ? '60' : '80'" />
+            <el-table-column :width="mobile ? '30' : '40'" />
             <el-table-column label="Материал" header-align="center">
               <template #default="scope">
                 <cell-material :row="scope.row.material"></cell-material>

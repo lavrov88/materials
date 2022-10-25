@@ -111,7 +111,7 @@ class WorksGetters extends Getters<IWorksState> {
           totalPrice: 0,
           materials: [] as IComputedMaterialItem[]
         }
-  
+
         workMaterials.forEach(wm => {
           const materialItem = materials.find(m => m.id === wm.material)
           if (!materialItem) {
@@ -129,7 +129,8 @@ class WorksGetters extends Getters<IWorksState> {
             totalPrice
           })
         })
-  
+        groupObj.materials.sort((a, b) => a.totalPrice < b.totalPrice ? 1 : -1)
+
         groupObj.price = groupObj.amount ?
                          Math.round(groupObj.totalPrice / groupObj.amount) :
                          0

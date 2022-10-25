@@ -8,7 +8,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "deploy": "gh-pages -d dist",
-    "predeploy": "build"
+    "predeploy": "vite build"
   },
   "dependencies": {
     "babel-plugin-transform-decorators": "^6.24.1",

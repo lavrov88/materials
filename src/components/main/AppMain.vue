@@ -1,6 +1,6 @@
 <template>
 <main class="materials_data_wrapper">
-  <div v-if="optionsAreOpen" class="app_main_block header_options">
+  <div v-show="optionsAreOpen" class="app_main_block header_options">
     <app-main-options>
     </app-main-options>
   </div>
@@ -50,7 +50,6 @@ import { formatToMoney } from '@/ultils/ultils';
 import { useApp } from '@/store/modules/app';
 import AppMainTable from './table/Table.vue';
 import AppMainTableGrouped from './table/TableGrouped.vue';
-import { ElNotification } from 'element-plus';
 
 const appStore = useApp()
 const optionsAreOpen = computed(() => appStore.getters.optionsAreOpen)
@@ -79,7 +78,8 @@ const allMaterialsPrice = computed(() => {
 }
 
 .header_options {
-  height: 80px;
+  position: relative;
+  height: 180px;
   padding: 20px;
   margin-bottom: 20px;
 }
@@ -91,8 +91,8 @@ const allMaterialsPrice = computed(() => {
 }
 
 .materials_data.with_opened_options {
-  height: calc(100% - 100px);
-  max-height: calc(100% - 100px);
+  height: calc(100% - 200px);
+  max-height: calc(100% - 200px);
 }
 
 .materials-table {

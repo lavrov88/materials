@@ -10,5 +10,8 @@ export interface IAppState {
 
   mainTable: {
     materialsAreGrouped: boolean
+    materialsTitles: TMaterialsTitles
   }
 }
+
+export type TMaterialsTitles = 'none' | 'table' | 'tooltip'

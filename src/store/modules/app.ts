@@ -1,4 +1,4 @@
-import type { IAppState } from '@/types/app'
+import type { IAppState, TMaterialsTitles } from '@/types/app'
 import { Getters, Mutations, Actions, Module, createComposable } from 'vuex-smart-module'
 
 class AppState {
@@ -12,7 +12,8 @@ class AppState {
   optionsAreOpen = false
 
   mainTable = {
-    materialsAreGrouped: true
+    materialsAreGrouped: true,
+    materialsTitles: 'tooltip'
   }
 }
 
@@ -35,6 +36,10 @@ class AppGetters extends Getters<IAppState> {
 
   get materialsAreGrouped() {
     return this.state.mainTable.materialsAreGrouped
+  }
+
+  get materialsTitles() {
+    return this.state.mainTable.materialsTitles
   }
 }
 
@@ -66,6 +71,10 @@ class AppMutations extends Mutations<IAppState> {
     } else {
       this.state.mainTable.materialsAreGrouped = payload
     }
+  }
+
+  toggleMaterialsTitles(payload: TMaterialsTitles) {
+    this.state.mainTable.materialsTitles = payload
   }
 }
 

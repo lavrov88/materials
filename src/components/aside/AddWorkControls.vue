@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const { unit } = defineProps({
   unit: String
@@ -44,9 +44,6 @@ const enterHandler = (e: KeyboardEvent) => {
     onAddBtnClicked()
   }
 }
-// const outsideClickHandler = (e: MouseEvent) => {
-//   console.log(e)
-// }
 
 onMounted(() => {
   setTimeout(() => {
@@ -55,15 +52,7 @@ onMounted(() => {
     if (document.activeElement === inputEl.value.ref) {
       document.addEventListener('keydown', enterHandler)
     }
-    // document.addEventListener('click', outsideClickHandler)
-    // console.log('click on')
   });
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('keydown', enterHandler)
-  // document.removeEventListener('click', outsideClickHandler)
-  // console.log('click off')
 })
 </script>
 

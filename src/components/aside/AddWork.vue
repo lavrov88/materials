@@ -123,7 +123,7 @@ const afterWorkAdded = (title: string | null) => {
   setTimeout(() => {
     activeSet.value = null
     activeSetTitle.value = null
-    
+
     if (!dontClose.value) {
       addWorkDialogIsOpen.value = false
     } else {
@@ -186,5 +186,21 @@ const popupWidth = computed(() => {
 
 .dialog-footer .el-switch__label.el-switch__label--right.is-active {
   color: var(--el-color-primary);
+}
+
+@media (max-width: 480px) {
+  .add_work_dialog .el-dialog__body {
+    padding: 5px 10px 20px;
+  }
+
+  .el-menu-item.add_work_menu_item_wrapper {
+    padding: 0px 10px !important;
+  }
+
+  .el-message {
+    max-width: 90% !important;
+    left: 5vw !important;
+    transform: translateX(0%) !important;
+  }
 }
 </style>
