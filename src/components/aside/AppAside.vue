@@ -6,9 +6,11 @@
   <h5 v-if="!worksExist" class="app_sidebar_empty_title">
     Добавленных работ ещё нет
   </h5>
-  <works-list v-if="worksExist"></works-list>
-  <add-work></add-work>
-  <delete-all-works v-if="worksExist"></delete-all-works>
+  <works-list v-if="worksExist" />
+  <div class="app_sidebar_controls">
+    <add-work />
+    <delete-all-works v-if="worksExist" />
+  </div>
 </div>
 </template>
 
@@ -40,5 +42,13 @@ const worksExist = computed(() => !!useWorks().getters.works.length)
 .app_sidebar_empty_title {
   margin-top: 0;
   margin-bottom: 40px;
+}
+
+.app_sidebar_controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  padding-top: 20px;
 }
 </style>

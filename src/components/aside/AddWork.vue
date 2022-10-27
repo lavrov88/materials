@@ -2,7 +2,9 @@
 <div class="sidebar_add_work">
   <el-button
     @click="addWorkDialogIsOpen = true"
-    type="primary">
+    type="primary"
+    :icon="Plus"
+  >
     Добавить новый вид работ
   </el-button>
 
@@ -42,7 +44,7 @@
                 v-if="activeSet === index && addWorkDialogIsOpen"
                 :unit="set.unit"
                 @added="onWorkAdded"
-              ></add-work-controls>
+              />
             </div>
           </el-menu-item>
         </el-menu>
@@ -80,6 +82,7 @@ import type { ISetItem, TSetsTypes } from '@/types/sets';
 import type { IAddWorkPayload } from '@/types/works';
 import setsNames from '@/enums/sets'
 import { ElMessage } from 'element-plus';
+import { Plus } from '@element-plus/icons-vue'
 import { useApp } from '@/store/modules/app';
 
 const addWorkDialogIsOpen = ref(false)
@@ -153,7 +156,7 @@ const popupWidth = computed(() => {
 
 <style>
 .sidebar_add_work {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .el-dialog.add_work_dialog {

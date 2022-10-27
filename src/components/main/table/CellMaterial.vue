@@ -37,9 +37,11 @@ const titleOption = computed(() => useApp().getters.materialsTitles)
 <style>
 .el-table .material_cell__name {
   font-size: 13px;
+  line-height: 1.4;
 }
 .el-table .material_cell__title {
   font-size: 11px;
+  line-height: 1.5;
 }
 
 .el-table .el-table--small .material_cell__name {

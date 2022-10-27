@@ -1,5 +1,5 @@
 <template>
-<li>
+<li class="work-list-item__li">
   <el-card
     shadow="hover"
     class="work-list-item__wrapper"
@@ -33,6 +33,7 @@
         title="Удалить эту работу?"
         confirm-button-text="Да"
         cancel-button-text="Нет"
+        confirm-button-type="danger"
         hide-icon
         width="180px"
       >
@@ -83,12 +84,18 @@ const onConfirmDelete = () => {
 }
 </script>
 
-<style scoped>
+<style>
+.work-list-item__li {
+  transition: all 0.3s ease;
+  max-width: 100%;
+}
+
 .work-list-item__wrapper {
   position: relative;
   margin-bottom: 10px;
   margin-right: 15px;
 }
+
 .work-list-item__body {
   display: flex;
   justify-content: space-between;
@@ -129,6 +136,8 @@ const onConfirmDelete = () => {
 .work-list-item__delete_btn button {
   height: 20px;
   width: 20px;
+  max-height: 20px;
+  max-width: 20px;
 }
 
 .work-list-item__amount_digit,

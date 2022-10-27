@@ -1,9 +1,11 @@
 <template>
 <main class="materials_data_wrapper">
-  <div v-show="optionsAreOpen" class="app_main_block header_options">
-    <app-main-options>
-    </app-main-options>
-  </div>
+  <transition name="mode-fade">
+    <div v-show="optionsAreOpen" class="app_main_block header_options">
+      <app-main-options>
+      </app-main-options>
+    </div>
+  </transition>
 
   <div
     class="app_main_block materials_data"
@@ -75,6 +77,7 @@ const allMaterialsPrice = computed(() => {
   border-radius: 10px;
   padding: 30px 0;
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  transition: height .2s ease;
 }
 
 .header_options {
@@ -88,6 +91,8 @@ const allMaterialsPrice = computed(() => {
   height: 100%;
   max-height: 100%;
   overflow: auto;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .materials_data.with_opened_options {
@@ -130,5 +135,17 @@ const allMaterialsPrice = computed(() => {
 .materials_data_empty__description {
   color: #9b9fa7;
   font-size: 14px;
+}
+
+
+.mode-fade-enter-active, .mode-fade-leave-active {
+  transition: all .2s ease;
+}
+
+.mode-fade-enter-from, .mode-fade-leave-to {
+  height: 0px;
+  opacity: 0;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 </style>

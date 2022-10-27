@@ -12,6 +12,7 @@
     <template #reference>
       <el-button
         type="danger" size="small"
+        :icon="Delete"
         text bg
       >
         Очистить список
@@ -23,6 +24,7 @@
 
 <script lang="ts" setup>
 import { useWorks } from '@/store/modules/addedWorks';
+import { Delete } from '@element-plus/icons-vue'
 
 const { commit } = useWorks()
 const onDeleteAllWorks = () => {
@@ -31,4 +33,7 @@ const onDeleteAllWorks = () => {
 </script>
 
 <style>
+.sidebar_delete_all_works {
+  margin: 0 auto;
+}
 </style>

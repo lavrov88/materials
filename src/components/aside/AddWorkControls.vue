@@ -3,10 +3,10 @@
   <el-input
     ref="inputEl"
     class="add_work_menu_item__amount"
-    placeholder="0"
     v-model="inputValue"
-  />
-  <span class="add_work_menu_item__amount_unit">{{ unit }}</span>
+  >
+    <template #append>{{ unit }}</template>
+  </el-input>
   <el-button
     type="primary"
     @click="onAddBtnClicked"
@@ -59,7 +59,8 @@ onMounted(() => {
 <style>
 .add_work_menu_item__controls {
   position: absolute;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
   right: 0;
   display: flex;
   justify-content: end;
@@ -68,14 +69,18 @@ onMounted(() => {
   padding-right: 10px;
   gap: 10px;
   background-color: #fff;
+  transition: background-color var(--el-transition-duration);
+}
+
+.el-menu-item.add_work_menu_item_wrapper:hover .add_work_menu_item__controls {
+  background-color: var(--el-menu-hover-bg-color);
 }
 
 .el-input.add_work_menu_item__amount {
-  width: 60px;
-  text-align: center;
+  width: 120px;
 }
 
-.add_work_menu_item__amount_unit {
-  color: #585858;
+.el-input.add_work_menu_item__amount .el-input__inner {
+  text-align: center;
 }
 </style>

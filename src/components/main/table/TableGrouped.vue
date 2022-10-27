@@ -12,31 +12,95 @@
     default-expand-all
     row-class-name="grouped_row"
   >
-    <el-table-column type="expand" :width="mobile ? '30' : '40'">
+    <el-table-column
+      type="expand"
+      :width="mobile ? '30' : '40'"
+    >
       <template #default="props">
         <div m="4">
-          <el-table :data="props.row.materials" :show-header="false" stripe border size="small">
+          <el-table
+            :data="props.row.materials"
+            :show-header="false"
+            stripe
+            border
+            size="small"
+          >
             <el-table-column :width="mobile ? '30' : '40'" />
-            <el-table-column label="Материал" header-align="center">
+            <el-table-column
+              label="Материал"
+              header-align="center"
+            >
               <template #default="scope">
-                <cell-material :row="scope.row.material"></cell-material>
+                <cell-material :row="scope.row.material" />
               </template>
             </el-table-column>
-            <el-table-column label="Кол." prop="amount" :width="mobile ? '60' : '70'" align="center" />
-            <el-table-column label="Ед." prop="material.unit" :width="mobile ? '50' : '60'" align="center" />
-            <el-table-column label="Цена" prop="material.price" :width="mobile ? '70' : '90'" align="right" header-align="center" />
-            <el-table-column label="Стоим." prop="totalPrice" :width="mobile ? '80' : '90'" align="right" header-align="center" />
+            <el-table-column
+              label="Кол."
+              prop="amount"
+              :width="mobile ? '60' : '70'"
+              align="center"
+            />
+            <el-table-column
+              label="Ед."
+              prop="material.unit"
+              :width="mobile ? '50' : '60'"
+              align="center"
+            />
+            <el-table-column
+              v-if="!mobile"
+              label="Цена"
+              prop="material.price"
+              :width="mobile ? '70' : '90'"
+              align="right"
+              header-align="center"
+            />
+            <el-table-column
+              label="Стоим."
+              prop="totalPrice"
+              :width="mobile ? '80' : '90'"
+              align="right"
+              header-align="center"
+            />
           </el-table>
         </div>
       </template>
     </el-table-column>
-    <el-table-column :label="setNames[workType.workType]" prop="title" header-align="center" />
-    <el-table-column label="Кол." prop="amount" :width="mobile ? '60' : '70'" align="center" />
-    <el-table-column label="Ед." prop="unit" :width="mobile ? '50' : '60'" align="center" />
-    <el-table-column label="Цена" prop="price" :width="mobile ? '70' : '90'" align="right" header-align="center" />
-    <el-table-column label="Стоим." prop="totalPrice" :width="mobile ? '80' : '90'" align="right" header-align="center" />
+    <el-table-column
+      :label="setNames[workType.workType]"
+      prop="title"
+      header-align="center"
+    />
+    <el-table-column
+      label="Кол." prop="amount"
+      :width="mobile ? '60' : '70'"
+      align="center"
+    />
+    <el-table-column
+      label="Ед."
+      prop="unit"
+      :width="mobile ? '50' : '60'"
+      align="center"
+    />
+    <el-table-column
+      v-if="!mobile"
+      label="Цена"
+      prop="price"
+      :width="mobile ? '70' : '90'"
+      align="right"
+      header-align="center"
+    />
+    <el-table-column
+      label="Стоим."
+      prop="totalPrice"
+      :width="mobile ? '80' : '90'"
+      align="right"
+      header-align="center"
+    />
   </el-table>
-  <div v-if="checkTotalPriceVisibility(workType)" class="work_type_table__footer">
+  <div
+    v-if="checkTotalPriceVisibility(workType)"
+    class="work_type_table__footer"
+  >
     Стоимость материалов по разделу
     {{ setNames[workType.workType].toLocaleLowerCase() }}:
     <strong>{{ workType.workTypeTotalPrice }}</strong>
