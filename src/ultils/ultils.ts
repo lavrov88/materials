@@ -1,5 +1,6 @@
 import type { INormalizedGroupedMaterials, INormalizedGroupedMaterialsTypes, INormalizedMaterials } from "@/types/materials";
-import type { IComputedMaterialGroup, IComputedMaterialItem, IWorkTypeItem } from "@/types/works";
+import type { ISetItem, ISetsState, TSetsTypes } from "@/types/sets";
+import type { IAddWorkPayload, IComputedMaterialGroup, IComputedMaterialItem, IWorkItem, IWorkTypeItem } from "@/types/works";
 import { computed, type ComputedRef } from "vue";
 
 export const generateId = () => {
@@ -52,3 +53,36 @@ export const normalizeGroupedMaterials = (workTypes: IWorkTypeItem[]) => (workTy
     works: normalizeGroupedMaterialsWorks(wt.works)
   }
 }))
+
+export const getWorksString = (works: IWorkItem[]) => {
+  let str = '?'
+  works.forEach((work, idx) => {
+    str += `${work.set.shortName}=${work.amount}`
+    str += idx === works.length - 1 ? '': '&'
+  })
+  return str
+}
+
+export const getWorksFromString = (str: string, sets: ISetsState) => {
+  const urlObjects = str.slice(2).split('&').map(strItem => {
+    const [ shortName, amount ] = strItem.split('=')
+    return { shortName, amount: +amount }
+  })
+  const dispatchObjects = [] as IAddWorkPayload[]
+
+  urlObjects.forEach(urlItem => {
+    Object.values(sets).forEach((setsPart: ISetItem[], idx) => {
+      const foundSet = setsPart.find(set => set.shortName === urlItem.shortName)
+      if (foundSet) {
+        const workType = Object.keys(sets)[idx]
+        dispatchObjects.push({
+          workType,
+          setTitle: foundSet.title,
+          amount: urlItem.amount
+        } as IAddWorkPayload)
+      }
+    })
+  })
+
+  return dispatchObjects
+}

@@ -5,7 +5,8 @@ import sets from './sets';
 import materials from './materials';
 import type { IWorksState, IWorkItem, IComputedMaterialItem, IComputedMaterialGroup, IChangeWorkAmount, IAddWorkPayload, IWorksByTypeItem, IWorkTypeItem } from '@/types/works';
 import type { TSetsTypes } from '@/types/sets';
-import { generateId } from '@/ultils/ultils';
+import { generateId, getWorksString } from '@/ultils/ultils';
+import { router } from '@/main';
 
 class WorksState {
   works = [] as IWorkItem[]
@@ -156,6 +157,14 @@ class WorkMutations extends Mutations<IWorksState> {
     this.state.works.push(payload)
   }
 
+  changeWorkAmount(payload: IChangeWorkAmount) {
+    const { id, amount } = payload
+    const workItem = this.state.works.find(w => w.id === id)
+    if (workItem) {
+      workItem.amount = amount
+    }
+  }
+
   deleteWork(payload: string) {
     this.state.works = this.state.works.filter(w => w.id !== payload)
   }
@@ -173,19 +182,17 @@ class WorkMutations extends Mutations<IWorksState> {
       return 0
     })
   }
-
-  changeWorkAmount(payload: IChangeWorkAmount) {
-    const { id, amount } = payload
-    const workItem = this.state.works.find(w => w.id === id)
-    if (workItem) {
-      workItem.amount = amount
-    }
-  }
 }
 
 class WorksActions extends Actions<
   WorksState, WorksGetters, WorkMutations, WorksActions
 > {
+  appContext!: Context<typeof app>
+
+  $init(store: Store<any>): void {
+    this.appContext = app.context(store)
+  }
+
   addWork({workType, setTitle, amount}: IAddWorkPayload) {
     const set = this.getters.sets[workType].find(set => set.title === setTitle)
     if (set) {
@@ -197,10 +204,36 @@ class WorksActions extends Actions<
       })
       this.commit('sortWorks')
     }
+
+    this.dispatch('refreshUrl')
   }
 
   changeWorkAmount(payload: IChangeWorkAmount) {
     this.commit('changeWorkAmount', payload)
+    this.dispatch('refreshUrl')
+  }
+
+  deleteWork(payload: string) {
+    this.commit('deleteWork', payload)
+    this.dispatch('refreshUrl')
+  }
+
+  clearWorks() {
+    this.commit('clearWorks')
+    this.dispatch('refreshUrl')
+  }
+
+  fillWorksFromUrl(payload: IAddWorkPayload[]) {
+    payload.forEach(work => {
+      this.dispatch('addWork', work)
+    })
+    setTimeout(() => {
+      this.appContext.commit('toggleAppIsInitialized')
+    }, 0)
+  }
+
+  refreshUrl() {
+    router.replace(getWorksString(this.getters.works))
   }
 }
 

@@ -26,9 +26,9 @@
 import { useWorks } from '@/store/modules/addedWorks';
 import { Delete } from '@element-plus/icons-vue'
 
-const { commit } = useWorks()
+const { dispatch } = useWorks()
 const onDeleteAllWorks = () => {
-  commit('clearWorks')
+  dispatch('clearWorks')
 }
 </script>
 

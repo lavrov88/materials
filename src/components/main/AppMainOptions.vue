@@ -8,9 +8,9 @@
 
   <label class="options_item materials_titles">
     <span class="options_materials_titles__label">Марки материалов:</span>
-    <el-select v-model="materialsTitles">
+    <el-select size="small" v-model="materialsTitles">
       <el-option
-        v-for="item in options"
+        v-for="item in titlesOptions"
         :key="item.value"
         :label="item.label"
         :value="item.value"
@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import { useApp } from '@/store/modules/app';
 import { Close } from '@element-plus/icons-vue'
-import { computed, ref } from 'vue';
+import { computed, getCurrentInstance, ref } from 'vue';
 
 const appStore = useApp()
 const tablet = computed(() => appStore.getters.tabletLayout)
@@ -49,7 +49,6 @@ const materialsAreGrouped = computed({
   }
 })
 
-const value = ref('')
 const materialsTitles = computed({
   get() {
     return appStore.getters.materialsTitles
@@ -58,7 +57,7 @@ const materialsTitles = computed({
     appStore.commit('toggleMaterialsTitles', val)
   }
 })
-const options = [
+const titlesOptions = [
   {
     value: 'tooltip',
     label: 'во всплывающей подсказке',
@@ -73,9 +72,8 @@ const options = [
   }
 ]
 
-
 const onCloseOptionsClick = () => {
-  appStore.commit('toggleOptions')
+  appStore.dispatch('toggleOptions')
 }
 </script>
 
@@ -103,6 +101,10 @@ const onCloseOptionsClick = () => {
   align-items: center;
   gap: 10px;
   font-size: 14px;
+}
+
+.materials_titles .el-input__inner {
+  width: 160px;
 }
 
 .options_close_btn {

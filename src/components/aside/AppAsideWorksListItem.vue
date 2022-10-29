@@ -58,8 +58,7 @@ interface Props {
   index: number
 }
 const { work, index } = defineProps<Props>()
-const commit = useWorks().commit
-const dispatch = useWorks().dispatch
+const { dispatch } = useWorks()
 
 const amountEditIsOn = ref(false)
 const amountInput = ref()
@@ -80,7 +79,7 @@ const onAmountChange = (e: Event) => {
 }
 
 const onConfirmDelete = () => {
-  commit('deleteWork', work.id)
+  dispatch('deleteWork', work.id)
 }
 </script>
 

@@ -1,7 +1,7 @@
 export default [
   {
     title: 'Металлические каркасы перегородок',
-    shortName: 'metFrame',
+    shortName: 'wallFrame',
     unit: 'м2',
     sortRange: 2010,
     materials: [
@@ -36,7 +36,7 @@ export default [
   },
   {
     title: 'Перегородки из газобетона 100 мм',
-    shortName: 'aerocrete100',
+    shortName: 'block100',
     unit: 'м2',
     sortRange: 2030,
     materials: [
@@ -46,12 +46,70 @@ export default [
   },
   {
     title: 'Перегородки из газобетона 150 мм',
-    shortName: 'aerocrete150',
+    shortName: 'block150',
     unit: 'м2',
     sortRange: 2031,
     materials: [
       { material: 687534, amount: 7 }, // Газобетон 150х250х625 мм D500
       { material: 142843, amount: 0.35 }, // Клей для блоков и плит (RS-I) 25кг
+    ]
+  },
+  {
+    title: 'Утепление перегородок минеральной ватой',
+    shortName: 'wallWarm',
+    unit: 'м2',
+    sortRange: 2110,
+    materials: [
+      { material: 106942, amount: 0.191 }, // Утеплитель
+    ]
+  },
+  {
+    title: 'Зашивка перегородок гипсокартоном',
+    shortName: 'gklv12',
+    unit: 'м2',
+    sortRange: 2210,
+    materials: [
+      { material: 101932, amount: 0.7 }, // ГКЛВ 12.5
+      { material: 107195, amount: 0.22 }, // Саморез черн. 3,5*25 по металл
+    ]
+  },
+  {
+    title: 'Штукатурка стен 20 мм',
+    shortName: 'plaster20',
+    unit: 'м2',
+    sortRange: 2312,
+    materials: [
+      { material: 106958, amount: 0.57 },
+    ]
+  },
+  {
+    title: 'Штукатурка стен 30 мм',
+    shortName: 'plaster30',
+    unit: 'м2',
+    sortRange: 2313,
+    materials: [
+      { material: 106958, amount: 0.85 },
+    ]
+  },
+  {
+    title: 'Штукатурка стен 40 мм',
+    shortName: 'plaster40',
+    unit: 'м2',
+    sortRange: 2314,
+    materials: [
+      { material: 106958, amount: 1.14 },
+    ]
+  },
+  {
+    title: 'Шпаклевка cтен под покраску',
+    shortName: 'wallPutty',
+    unit: 'м2',
+    sortRange: 3410,
+    materials: [
+      { material: 157965, amount: 0.022 }, // Грунтовка Кнауф Тифенгрунд 10 л
+      { material: 107945, amount: 0.022 }, // Малярный стеклохолст Oscar-эконом 50 м2
+      { material: 168212, amount: 0.024 }, // Клей Oscar для стеклохолста 10 кг
+      { material: 135469, amount: 0.156 }, // Шпаклевка финишная Knauf Ротбанд Профи паста 18 кг
     ]
   },
 ]

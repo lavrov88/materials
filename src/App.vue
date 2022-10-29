@@ -1,14 +1,14 @@
 <template>
 <div class="app_container">
-  <aside  v-if="!tabletLayout" class="app_sidebar_wrapper">
+  <aside v-if="!tabletLayout" class="app_sidebar_wrapper">
     <div class="app_sidebar_inner">
       <app-aside></app-aside>
     </div>
   </aside>
 
   <div class="app_data">
-    <app-header></app-header>
-    <app-main></app-main>
+    <app-header />
+    <app-main />
   </div>
 
   <mobile-works-list></mobile-works-list>
@@ -19,6 +19,10 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted } from 'vue';
 import { useApp } from '@/store/modules/app';
+import { useRoute } from 'vue-router';
+import { getWorksFromString } from './ultils/ultils';
+import { useSets } from './store/modules/sets';
+import { useWorks } from './store/modules/addedWorks';
 
 const appStore = useApp()
 const commit = appStore.commit
@@ -50,6 +54,10 @@ const onWindowResize = () => {
   }
 }
 
+const route = useRoute()
+const { sets } = useSets().getters
+const worksState = useWorks()
+
 onMounted(() => {
   if (checkMobileWidth()) {
     commit('toggleMobileLayout', true)
@@ -58,7 +66,13 @@ onMounted(() => {
     commit('toggleTabletLayout', true)
   }
   window.addEventListener('resize', onWindowResize)
+
+  setTimeout(() => {
+    const worksFromUrl = getWorksFromString(route.fullPath, sets)
+    worksState.dispatch('fillWorksFromUrl', worksFromUrl)
+  }, 0)
 })
+
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onWindowResize)
 })

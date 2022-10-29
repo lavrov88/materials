@@ -1,4 +1,4 @@
-import type { IAppState, TMaterialsTitles } from '@/types/app'
+import type { IAppState, TMainScrollbarEl, TMaterialsTitles } from '@/types/app'
 import { Getters, Mutations, Actions, Module, createComposable } from 'vuex-smart-module'
 
 class AppState {
@@ -9,11 +9,14 @@ class AppState {
     options: false
   }
 
+  appIsInitialized = false
+  addWorkDialogIsOpen = false
   optionsAreOpen = false
 
   mainTable = {
     materialsAreGrouped: true,
-    materialsTitles: 'tooltip'
+    materialsTitles: 'tooltip',
+    mainScrollbarEl: null as TMainScrollbarEl
   }
 }
 
@@ -30,6 +33,14 @@ class AppGetters extends Getters<IAppState> {
     return this.state.mobileMenus
   }
 
+  get appIsInitialized() {
+    return this.state.appIsInitialized
+  }
+
+  get addWorkDialogIsOpen() {
+    return this.state.addWorkDialogIsOpen
+  }
+
   get optionsAreOpen() {
     return this.state.optionsAreOpen
   }
@@ -41,23 +52,35 @@ class AppGetters extends Getters<IAppState> {
   get materialsTitles() {
     return this.state.mainTable.materialsTitles
   }
+
+  get mainScrollbarEl() {
+    return this.state.mainTable.mainScrollbarEl
+  }
 }
 
 class AppMutations extends Mutations<IAppState> {
-  toggleMobileLayout(value: boolean) {
-    this.state.mobileLayout = value
+  toggleMobileLayout(payload: boolean) {
+    this.state.mobileLayout = payload
   }
 
-  toggleTabletLayout(value: boolean) {
-    this.state.tabletLayout = value
+  toggleTabletLayout(payload: boolean) {
+    this.state.tabletLayout = payload
   }
 
-  toggleMobileWorks(value: boolean) {
-    this.state.mobileMenus.works = value
+  toggleMobileWorks(payload: boolean) {
+    this.state.mobileMenus.works = payload
   }
 
-  toggleMobileOptions(value: boolean) {
-    this.state.mobileMenus.options = value
+  toggleMobileOptions(payload: boolean) {
+    this.state.mobileMenus.options = payload
+  }
+
+  toggleAppIsInitialized() {
+    this.state.appIsInitialized = !this.state.appIsInitialized
+  }
+
+  toggleAddWorkDialog(payload: boolean) {
+    this.state.addWorkDialogIsOpen = payload
   }
 
   toggleOptions() {
@@ -76,11 +99,23 @@ class AppMutations extends Mutations<IAppState> {
   toggleMaterialsTitles(payload: TMaterialsTitles) {
     this.state.mainTable.materialsTitles = payload
   }
+
+  setMainScrollbarEl(payload: TMainScrollbarEl) {
+    this.state.mainTable.mainScrollbarEl = payload
+  }
 }
 
 class AppActions extends Actions<
   AppState, AppGetters, AppMutations, AppActions
-> {}
+> {
+  toggleOptions() {
+    const mainScroll = this.getters.mainScrollbarEl
+    this.commit('toggleOptions')
+    setTimeout(() => {
+      mainScroll?.update()
+    }, 400);
+  }
+}
 
 const app = new Module({
   state: AppState,

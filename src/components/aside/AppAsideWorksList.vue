@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { useWorks } from '@/store/modules/addedWorks'
 import { computed } from 'vue';
-import WorksListItem from './WorksListItem.vue';
+import WorksListItem from './AppAsideWorksListItem.vue';
 import setsNames from '@/enums/sets'
 
 const workByType = computed(() => useWorks().getters.worksByType)

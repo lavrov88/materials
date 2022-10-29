@@ -1,6 +1,6 @@
 <template>
 <main class="materials_data_wrapper">
-  <transition name="mode-fade">
+  <transition name="options">
     <div v-show="optionsAreOpen" class="app_main_block header_options">
       <app-main-options>
       </app-main-options>
@@ -11,49 +11,64 @@
     class="app_main_block materials_data"
     :class="optionsAreOpen ? 'with_opened_options' : ''"
   >
-  <el-scrollbar max-height="100%" always>
-    <el-empty
-      v-show="!allMaterialsPrice"
-      class="materials_data_empty"
-      :class="optionsAreOpen ? 'with_opened_options' : ''"
-    >
-      <template v-slot:description>
-        <div class="materials_data_empty__title">
-          Список пока пуст
+  <el-scrollbar
+    ref="mainTableScrollbar"
+    max-height="100%"
+    always
+  >
+    <transition name="main-empty" mode="out-in">
+      <app-main-skeleton v-if="isLoading" />
+
+      <div
+        v-else-if="allMaterialsPrice"
+        class="materials-table"
+      >
+        <app-main-table v-if="!materialsAreGrouped">
+        </app-main-table>
+
+        <app-main-table-grouped v-if="materialsAreGrouped">
+        </app-main-table-grouped>
+
+        <div class="materials_total_price">
+          Общая стоимость материалов:
+          <strong>{{ allMaterialsPrice }}</strong>
+          руб.
         </div>
-        <div class="materials_data_empty__description">
-          Добавьте работы в меню слева
-        </div>
-      </template>
-    </el-empty>
-
-    <div v-show="allMaterialsPrice" class="materials-table">
-      <app-main-table v-if="!materialsAreGrouped">
-      </app-main-table>
-
-      <app-main-table-grouped v-if="materialsAreGrouped">
-      </app-main-table-grouped>
-
-      <div class="materials_total_price">
-        Общая стоимость материалов:
-        <strong>{{ allMaterialsPrice }}</strong>
-        руб.
       </div>
-    </div>
+
+      <el-empty
+        v-else
+        class="materials_data_empty"
+        :class="optionsAreOpen ? 'with_opened_options' : ''"
+      >
+        <template v-slot:description>
+          <div class="materials_data_empty__title">
+            Список пока пуст
+          </div>
+          <div class="materials_data_empty__description">
+            Добавьте работы в меню слева
+          </div>
+        </template>
+      </el-empty>
+    </transition>
+
   </el-scrollbar>
   </div>
 </main>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useWorks } from '@/store/modules/addedWorks'
 import { formatToMoney } from '@/ultils/ultils';
 import { useApp } from '@/store/modules/app';
 import AppMainTable from './table/Table.vue';
 import AppMainTableGrouped from './table/TableGrouped.vue';
+import { ElEmpty, type ElScrollbar } from 'element-plus';
+import type { TMainScrollbarEl } from '@/types/app';
 
 const appStore = useApp()
+const isLoading = computed(() => !appStore.getters.appIsInitialized)
 const optionsAreOpen = computed(() => appStore.getters.optionsAreOpen)
 const materialsAreGrouped = computed(() => appStore.getters.materialsAreGrouped)
 
@@ -61,6 +76,12 @@ const worksStore = useWorks()
 const allMaterialsPrice = computed(() => {
   const price = worksStore.getters.computedMaterialsTotalPrice
   return price ? formatToMoney(price) : 0
+})
+
+const mainTableScrollbar = ref<InstanceType<typeof ElScrollbar>>()
+
+onMounted(() => {
+  appStore.commit('setMainScrollbarEl', mainTableScrollbar.value as TMainScrollbarEl)
 })
 </script>
 
@@ -77,7 +98,7 @@ const allMaterialsPrice = computed(() => {
   border-radius: 10px;
   padding: 30px 0;
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-  transition: height .2s ease;
+  transition: all .2s ease;
 }
 
 .header_options {
@@ -137,15 +158,22 @@ const allMaterialsPrice = computed(() => {
   font-size: 14px;
 }
 
+/* TRANSITIONS */
 
-.mode-fade-enter-active, .mode-fade-leave-active {
+.options-enter-active, .options-leave-active {
   transition: all .2s ease;
 }
-
-.mode-fade-enter-from, .mode-fade-leave-to {
+.options-enter-from, .options-leave-to {
   height: 0px;
   opacity: 0;
   padding-top: 0px;
   padding-bottom: 0px;
+  margin: 0;
+}
+.main-empty-enter-active, .main-empty-leave-active {
+  transition: opacity .2s ease;
+}
+.main-empty-enter-from, .main-empty-leave-to {
+  opacity: 0;
 }
 </style>

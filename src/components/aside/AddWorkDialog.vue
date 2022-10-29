@@ -1,91 +1,89 @@
 <template>
-<div class="sidebar_add_work">
-  <el-button
-    @click="addWorkDialogIsOpen = true"
-    type="primary"
-    :icon="Plus"
+<el-dialog
+  class="add_work_dialog"
+  @close="activeSet = null"
+  @click="handleDialogClick"
+  :width="popupWidth"
+  top="10vh"
+  v-model="addWorkDialogIsOpen"
+  title="Выберите новый вид работы"
+>
+<el-tabs
+  v-model="activeType"
+  @tab-click="handleTabClick"
+>
+  <el-tab-pane
+    v-for="wt of workTypes"
+    :key="wt.toString()"
+    :label="setsNames[wt as TSetsTypes]"
+    :name="wt"
   >
-    Добавить новый вид работ
-  </el-button>
-
-  <el-dialog
-    class="add_work_dialog"
-    @close="activeSet = null"
-    @click="handleDialogClick"
-    :width="popupWidth"
-    top="10vh"
-    v-model="addWorkDialogIsOpen"
-    title="Выберите новый вид работы"
-  >
-  <el-tabs
-    v-model="activeType"
-    @tab-click="handleTabClick"
-  >
-    <el-tab-pane
-      v-for="wt of workTypes"
-      :key="wt.toString()"
-      :label="setsNames[wt as TSetsTypes]"
-      :name="wt"
-    >
-      <el-scrollbar height="calc(80vh - 230px)">
-        <el-menu :default-active="'' + activeSet">
-          <el-menu-item
-            v-for="(set, index) in currentSets"
-            :key="set.title"
-            :index="'' + index"
-            @click="onSetSelected(set, index)"
-            class="add_work_menu_item_wrapper"
-          >
-            <div class="add_work_menu_item">
-              <div class="add_work_menu_item__title">
-                {{ set.title }}
-              </div>
-              <add-work-controls
-                v-if="activeSet === index && addWorkDialogIsOpen"
-                :unit="set.unit"
-                @added="onWorkAdded"
-              />
-            </div>
-          </el-menu-item>
-        </el-menu>
-      </el-scrollbar>
-    </el-tab-pane>
-  </el-tabs>
-
-    <template #footer>
-      <span class="dialog-footer">
-        <el-tooltip
-          effect="light"
-          content="Чтобы было удобно добавлять сразу несколько работ"
-          placement="top-start"
-          :hide-after="0"
+    <el-scrollbar height="calc(80vh - 230px)">
+      <el-menu :default-active="'' + activeSet">
+        <el-menu-item
+          v-for="(set, index) in currentSets"
+          :key="set.title"
+          :index="'' + index"
+          @click="onSetSelected(set, index)"
+          class="add_work_menu_item_wrapper"
         >
-          <el-switch
-            v-model="dontClose"
-            active-text="Не закрывать после добавления"
-            size="small"
-          />
-        </el-tooltip>
-        <el-button @click="addWorkDialogIsOpen = false">Назад</el-button>
-      </span>
-    </template>
-  </el-dialog>
-</div>
+          <div class="add_work_menu_item">
+            <div class="add_work_menu_item__title">
+              {{ set.title }}
+            </div>
+            <add-work-controls
+              v-if="activeSet === index && addWorkDialogIsOpen"
+              :unit="set.unit"
+              @added="onWorkAdded"
+            />
+          </div>
+        </el-menu-item>
+      </el-menu>
+    </el-scrollbar>
+  </el-tab-pane>
+</el-tabs>
+
+  <template #footer>
+    <span class="dialog-footer">
+      <el-tooltip
+        effect="light"
+        content="Чтобы было удобно добавлять сразу несколько работ"
+        placement="top-start"
+        :hide-after="0"
+      >
+        <el-switch
+          v-model="dontClose"
+          active-text="Не закрывать после добавления"
+          size="small"
+        />
+      </el-tooltip>
+      <el-button @click="addWorkDialogIsOpen = false">Назад</el-button>
+    </span>
+  </template>
+</el-dialog>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, type Ref } from 'vue';
 import { useSets } from '@/store/modules/sets';
 import { useWorks } from '@/store/modules/addedWorks';
-import AddWorkControls from './AddWorkControls.vue';
+import AddWorkControls from './AddWorkDialogControls.vue';
 import type { ISetItem, TSetsTypes } from '@/types/sets';
 import type { IAddWorkPayload } from '@/types/works';
 import setsNames from '@/enums/sets'
 import { ElMessage } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue'
 import { useApp } from '@/store/modules/app';
 
-const addWorkDialogIsOpen = ref(false)
+const appStore = useApp()
+
+const addWorkDialogIsOpen = computed({
+  get() {
+    return appStore.getters.addWorkDialogIsOpen
+  },
+  set(val) {
+    appStore.commit('toggleAddWorkDialog', val)
+  }
+})
 
 const workTypes = computed(() => useSets().getters.types)
 const activeType = ref(workTypes.value[0])
@@ -143,7 +141,6 @@ const afterWorkAdded = (title: string | null) => {
 
 const dontClose = ref(false)
 
-const appStore = useApp()
 const mobile = computed(() => appStore.getters.mobileLayout)
 const tablet = computed(() => appStore.getters.tabletLayout)
 const popupWidth = computed(() => {
@@ -155,10 +152,6 @@ const popupWidth = computed(() => {
 </script>
 
 <style>
-.sidebar_add_work {
-  margin-bottom: 20px;
-}
-
 .el-dialog.add_work_dialog {
   max-height: 80vh;
   max-width: 800px;

@@ -4,7 +4,7 @@
     <el-button type="primary">&#9776;</el-button>
   </div>
   <div class="app_header__title">
-    <h1 class="app_header__title_name">Калькулятор отделочных материалов</h1>
+    <h1 class="app_header__title_name">Калькулятор материалов для отделки</h1>
   </div>
   <div class="app_header_controls">
     <el-button
@@ -38,7 +38,7 @@ const appStore = useApp()
 const tablet = computed(() => appStore.getters.tabletLayout)
 
 const onOptionsBtnClick = () => {
-  appStore.commit('toggleOptions')
+  appStore.dispatch('toggleOptions')
 }
 const onClickMobileWorks = () => {
   appStore.commit('toggleMobileWorks', true)
@@ -48,7 +48,7 @@ const onClickMobileOptions = () => {
 }
 </script>
 
-<style scoped>
+<style>
 .app_header {
   height: 50px;
   padding-left: 20px;
@@ -62,7 +62,6 @@ const onClickMobileOptions = () => {
   padding-left: 10px;
   padding-right: 10px;
 }
-
 .app_header__title_name {
   font-size: 18px;
 }
