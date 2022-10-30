@@ -1,40 +1,23 @@
-# materials
+# Building materials calculator
 
-This template should help get you started developing with Vue 3 in Vite.
+App that helps you to calculate the amount of materials and their price
 
-## Recommended IDE Setup
+## Functionality
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- Creates the table with materials based on added list of works
+- Table can be customized by grouping materials or changing a view of title column
+- Added works save to URL, so link can be shared to other persons or devices
+- Option to batch add works for better convenience
+- List with added works is sorted automatically by works order
+- Mobile devices adapted (change layout, sizes, table's columns)
 
-## Type Support for `.vue` Imports in TS
+## Used stack
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+- Vue3 (Composition API)
+- TypeScript (types for state, input data objects, functions)
+- Vuex (store modules, vuex-smart-module for type safe modules)
+- Vue-router (for reading and writing query parameters in URL)
+- Element+ (tables, drawers, dialogs, tabs, tooltips, etc)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+[Deployed project](https://lavrov88.github.io/materials/)

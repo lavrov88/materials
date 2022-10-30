@@ -17,7 +17,6 @@ declare module '@vue/runtime-core' {
     AppMain: typeof import('./src/components/main/AppMain.vue')['default']
     AppMainOptions: typeof import('./src/components/main/AppMainOptions.vue')['default']
     AppMainSkeleton: typeof import('./src/components/main/AppMainSkeleton.vue')['default']
-    CellMaterial: typeof import('./src/components/main/table/CellMaterial.vue')['default']
     DeleteAllWorks: typeof import('./src/components/aside/DeleteAllWorks.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDialog: typeof import('element-plus/es')['ElDialog']

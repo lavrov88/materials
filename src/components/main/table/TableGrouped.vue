@@ -21,7 +21,6 @@
           <el-table
             :data="props.row.materials"
             :show-header="false"
-            stripe
             border
             size="small"
           >
