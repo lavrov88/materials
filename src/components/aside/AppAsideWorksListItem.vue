@@ -15,14 +15,17 @@
         @click="amountEditIsOn = !amountEditIsOn"
         class="work-list-item__amount_digit"
       >{{ work.amount }}</span>
-      <input
-        ref="amountInput"
+      <el-input-number
+        ref="amountInputEl"
         v-show="amountEditIsOn"
+        size="small"
+        :min="0"
+        :controls="false"
         @blur="amountEditIsOn = false"
-        @input="onAmountChange"
-        :value="work.amount"
+        placeholder="0"
         class="work-list-item__amount_input"
-      >
+        v-model="amountInputValue"
+      />
       <span class="work-list-item__amount_unit">
         {{ work.set.unit }}
       </span>
@@ -49,9 +52,10 @@
 
 <script lang="ts" setup>
 import { Delete } from '@element-plus/icons-vue'
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useWorks } from '@/store/modules/addedWorks'
 import type { IWorkItem } from '@/types/works';
+import { ElCard, ElInputNumber, ElPopconfirm, ElButton } from 'element-plus';
 
 interface Props {
   work: IWorkItem
@@ -61,12 +65,19 @@ const { work, index } = defineProps<Props>()
 const { dispatch } = useWorks()
 
 const amountEditIsOn = ref(false)
-const amountInput = ref()
+const amountInputValue = computed({
+  get() {
+    return work.amount
+  },
+  set(amount) {
+    dispatch('changeWorkAmount', { id: work.id, amount })
+  }
+})
+const amountInputEl = ref()
 watch(amountEditIsOn, () => {
   if (amountEditIsOn) {
     setTimeout(() => {
-      amountInput.value.focus()
-      amountInput.value.select()
+      amountInputEl.value.focus()
     });
   }
 })
@@ -113,8 +124,8 @@ const onConfirmDelete = () => {
 }
 
 .work-list-item__amount {
-  width: 70px;
-  min-width: 70px;
+  max-width: 90px;
+  min-width: 90px;
   padding-left: 5px;
   padding-right: 10px;
   display: flex;
@@ -139,10 +150,9 @@ const onConfirmDelete = () => {
   max-width: 20px;
 }
 
-.work-list-item__amount_digit,
-.work-list-item__amount_input {
+.work-list-item__amount_digit {
   height: 27px;
-  width: 38px;
+  width: 58px;
   min-width: 38px;
   border: 1.5px transparent solid;
   border-radius: 3px;
@@ -157,11 +167,25 @@ const onConfirmDelete = () => {
   border: 1.5px #aaa solid;
 }
 
-.work-list-item__amount_input {
+.work-list-item__amount .work-list-item__amount_input {
+  width: 58px;
+  height: 27px;
+  /* border: 1.5px #aaa transparent; */
+}
+
+.work-list-item__amount .el-input-number.work-list-item__amount_input .el-input__wrapper {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.work-list-item__amount .work-list-item__amount_input input {
+  width: 58px;
+  height: 25px;
+  padding-left: 0;
+  padding-right: 0;
   font-family: inherit;
   font-size: 12px;
-  text-align: center;
-  background-color: #eee;
-  border: 2px #aaa solid;
+  font-weight: 700;
+  line-height: 20px;
 }
 </style>

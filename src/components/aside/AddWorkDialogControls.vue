@@ -1,12 +1,16 @@
 <template>
 <div class="add_work_menu_item__controls">
-  <el-input
+  <el-input-number
     ref="inputEl"
+    @focus="onInputFocused"
+    @blur="onInputBlurred"
+    :min="0"
+    :controls="false"
+    placeholder="0"
     class="add_work_menu_item__amount"
     v-model="inputValue"
-  >
-    <template #append>{{ unit }}</template>
-  </el-input>
+  />
+  <span class="add_work_menu_item__amount_unit">{{ unit }}</span>
   <el-button
     type="primary"
     @click="onAddBtnClicked"
@@ -17,42 +21,37 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const { unit } = defineProps({
   unit: String
 })
 const emit = defineEmits([ 'added' ])
-
 const inputEl = ref()
-
-const inputValue = ref(0)
-watch(inputValue, (newValue, oldValue) => {
-  if (isNaN(+newValue) || +newValue < 0) {
-    inputValue.value = +oldValue
-  } else {
-    inputValue.value = +newValue
-  }
-});
+const inputValue = ref()
 
 const onAddBtnClicked = () => {
-  emit('added', inputValue)
+  emit('added', inputValue.value)
 }
-
 const enterHandler = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {
-    onAddBtnClicked()
+    inputEl.value.blur()
+    setTimeout(() => {
+      onAddBtnClicked()
+    }, 0);
   }
+}
+const onInputFocused = () => {
+  document.addEventListener('keydown', enterHandler)
+}
+const onInputBlurred = () => {
+  document.removeEventListener('keydown', enterHandler)
 }
 
 onMounted(() => {
   setTimeout(() => {
     inputEl.value.focus()
-    inputEl.value.select()
-    if (document.activeElement === inputEl.value.ref) {
-      document.addEventListener('keydown', enterHandler)
-    }
-  });
+  }, 0)
 })
 </script>
 
@@ -76,10 +75,13 @@ onMounted(() => {
   background-color: var(--el-menu-hover-bg-color);
 }
 
-.el-input.add_work_menu_item__amount {
-  width: 120px;
+.el-input-number.add_work_menu_item__amount {
+  width: 60px;
 }
 
+.add_work_menu_item__amount_unit {
+  color: #585858;
+}
 .el-input.add_work_menu_item__amount .el-input__inner {
   text-align: center;
 }

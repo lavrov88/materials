@@ -32,6 +32,7 @@
               {{ set.title }}
             </div>
             <add-work-controls
+              :key="set.title"
               v-if="activeSet === index && addWorkDialogIsOpen"
               :unit="set.unit"
               @added="onWorkAdded"
@@ -47,7 +48,7 @@
     <span class="dialog-footer">
       <el-tooltip
         effect="light"
-        content="Чтобы было удобно добавлять сразу несколько работ"
+        content="Чтобы добавить несколько работ сразу"
         placement="top-start"
         :hide-after="0"
       >
@@ -109,12 +110,12 @@ const handleDialogClick = (e: any) => {
 }
 
 const addedWorks = useWorks()
-const onWorkAdded = (amount: Ref<number>) => {
+const onWorkAdded = (amount: number) => {
   if (activeSet.value !== null) {
     addedWorks.dispatch('addWork', {
       workType: activeType.value,
       setTitle: activeSetTitle.value,
-      amount: amount.value
+      amount
     } as IAddWorkPayload)
     afterWorkAdded(activeSetTitle.value)
   }
@@ -169,6 +170,12 @@ const popupWidth = computed(() => {
   justify-content: space-between;
 }
 
+.add_work_menu_item__title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .dialog-footer {
   width: 100%;
   display: flex;
@@ -191,6 +198,10 @@ const popupWidth = computed(() => {
 
   .el-menu-item.add_work_menu_item_wrapper {
     padding: 0px 10px !important;
+  }
+
+  .add_work_menu_item__title {
+    font-size: 12px;
   }
 
   .el-message {

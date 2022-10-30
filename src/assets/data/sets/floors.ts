@@ -11,7 +11,7 @@ export default  [
   },
   {
     title: 'Утепление пола пенополистиролом 50 мм (в 1 слой)',
-    shortName: 'flWarm501',
+    shortName: 'flWarm51',
     unit: 'м2',
     sortRange: 1101,
     materials: [
@@ -23,7 +23,7 @@ export default  [
   },
   {
     title: 'Утепление пола пенополистиролом 50 мм (в 2 слоя)',
-    shortName: 'flWarm502',
+    shortName: 'flWarm52',
     unit: 'м2',
     sortRange: 1102,
     materials: [
@@ -35,7 +35,7 @@ export default  [
   },
   {
     title: 'Утепление пола пенополистиролом 50 мм (в 3 слоя)',
-    shortName: 'flWarm503',
+    shortName: 'flWarm53',
     unit: 'м2',
     sortRange: 1103,
     materials: [
@@ -47,7 +47,7 @@ export default  [
   },
   {
     title: 'Утепление пола пенополистиролом 50 мм (в 4 слоя)',
-    shortName: 'flWarm504',
+    shortName: 'flWarm54',
     unit: 'м2',
     sortRange: 1104,
     materials: [
@@ -59,7 +59,7 @@ export default  [
   },
   {
     title: 'Утепление пола пенополистиролом 100 мм (в 1 слой)',
-    shortName: 'flWarm1001',
+    shortName: 'flWarm101',
     unit: 'м2',
     sortRange: 1111,
     materials: [
@@ -71,7 +71,7 @@ export default  [
   },
   {
     title: 'Утепление пола пенополистиролом 100 мм (в 2 слоя)',
-    shortName: 'flWarm1002',
+    shortName: 'flWarm102',
     unit: 'м2',
     sortRange: 1112,
     materials: [
@@ -83,7 +83,7 @@ export default  [
   },
   {
     title: 'Утепление пола пенополистиролом 100 мм (в 3 слоя)',
-    shortName: 'flWarm1003',
+    shortName: 'flWarm103',
     unit: 'м2',
     sortRange: 1113,
     materials: [
@@ -95,7 +95,7 @@ export default  [
   },
   {
     title: 'Утепление пола пенополистиролом 100 мм (в 4 слоя)',
-    shortName: 'flWarm1004',
+    shortName: 'flWarm104',
     unit: 'м2',
     sortRange: 1114,
     materials: [
@@ -107,7 +107,7 @@ export default  [
   },
   {
     title: 'Стяжка пола цементно-песчанная 50 мм',
-    shortName: 'screed50',
+    shortName: 'screed5',
     unit: 'м2',
     sortRange: 1215,
     materials: [
@@ -117,7 +117,7 @@ export default  [
   },
   {
     title: 'Стяжка пола цементно-песчанная 60 мм',
-    shortName: 'screed60',
+    shortName: 'screed6',
     unit: 'м2',
     sortRange: 1216,
     materials: [
@@ -127,7 +127,7 @@ export default  [
   },
   {
     title: 'Стяжка пола цементно-песчанная 70 мм',
-    shortName: 'screed70',
+    shortName: 'screed7',
     unit: 'м2',
     sortRange: 1217,
     materials: [
@@ -137,7 +137,7 @@ export default  [
   },
   {
     title: 'Стяжка пола цементно-песчанная 80 мм',
-    shortName: 'screed80',
+    shortName: 'screed8',
     unit: 'м2',
     sortRange: 1218,
     materials: [
@@ -147,7 +147,7 @@ export default  [
   },
   {
     title: 'Стяжка пола цементно-песчанная 90 мм',
-    shortName: 'screed90',
+    shortName: 'screed9',
     unit: 'м2',
     sortRange: 1219,
     materials: [
@@ -157,7 +157,7 @@ export default  [
   },
   {
     title: 'Стяжка пола цементно-песчанная 100 мм',
-    shortName: 'screed100',
+    shortName: 'screed10',
     unit: 'м2',
     sortRange: 1220,
     materials: [

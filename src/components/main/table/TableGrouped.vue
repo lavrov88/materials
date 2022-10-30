@@ -117,7 +117,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useWorks } from '@/store/modules/addedWorks'
 import { normalizeGroupedMaterials } from '@/ultils/ultils';
-import CellMaterial from './CellMaterial.vue';
+import CellMaterial from './TableCellMaterial.vue';
 import setNames from '@/enums/sets'
 import type { INormalizedGroupedMaterialsTypes } from '@/types/materials';
 import { useApp } from '@/store/modules/app';

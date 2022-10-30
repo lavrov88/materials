@@ -36,7 +36,7 @@ export default [
   },
   {
     title: 'Перегородки из газобетона 100 мм',
-    shortName: 'block100',
+    shortName: 'block10',
     unit: 'м2',
     sortRange: 2030,
     materials: [
@@ -46,7 +46,7 @@ export default [
   },
   {
     title: 'Перегородки из газобетона 150 мм',
-    shortName: 'block150',
+    shortName: 'block15',
     unit: 'м2',
     sortRange: 2031,
     materials: [
@@ -75,7 +75,7 @@ export default [
   },
   {
     title: 'Штукатурка стен 20 мм',
-    shortName: 'plaster20',
+    shortName: 'plast2',
     unit: 'м2',
     sortRange: 2312,
     materials: [
@@ -84,7 +84,7 @@ export default [
   },
   {
     title: 'Штукатурка стен 30 мм',
-    shortName: 'plaster30',
+    shortName: 'plast3',
     unit: 'м2',
     sortRange: 2313,
     materials: [
@@ -93,7 +93,7 @@ export default [
   },
   {
     title: 'Штукатурка стен 40 мм',
-    shortName: 'plaster40',
+    shortName: 'plast4',
     unit: 'м2',
     sortRange: 2314,
     materials: [

@@ -26,6 +26,7 @@
     align="center"
   />
   <el-table-column
+    v-if="!mobile"
     label="Цена"
     prop="price"
     :width="mobile ? '60' : '90'"
@@ -33,7 +34,6 @@
     header-align="center"
   />
   <el-table-column
-    v-if="!mobile"
     label="Стоим."
     prop="totalPrice"
     :width="mobile ? '70' : '90'"
@@ -47,7 +47,7 @@
 import { computed } from 'vue';
 import { useWorks } from '@/store/modules/addedWorks'
 import { normalizeMaterials } from '@/ultils/ultils';
-import CellMaterial from './CellMaterial.vue';
+import CellMaterial from './TableCellMaterial.vue';
 import { useApp } from '@/store/modules/app';
 
 const computedMaterials = computed(() => useWorks().getters.computedMaterials)

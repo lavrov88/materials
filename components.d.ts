@@ -20,10 +20,9 @@ declare module '@vue/runtime-core' {
     CellMaterial: typeof import('./src/components/main/table/CellMaterial.vue')['default']
     DeleteAllWorks: typeof import('./src/components/aside/DeleteAllWorks.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCard: typeof import('element-plus/es')['ElCard']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
-    ElInput: typeof import('element-plus/es')['ElInput']
+    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
@@ -43,6 +42,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Table: typeof import('./src/components/main/table/Table.vue')['default']
+    TableCellMaterial: typeof import('./src/components/main/table/TableCellMaterial.vue')['default']
     TableGrouped: typeof import('./src/components/main/table/TableGrouped.vue')['default']
   }
 }

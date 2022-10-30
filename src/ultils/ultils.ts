@@ -73,7 +73,11 @@ export const getWorksFromString = (str: string, sets: ISetsState) => {
   urlObjects.forEach(urlItem => {
     Object.values(sets).forEach((setsPart: ISetItem[], idx) => {
       const foundSet = setsPart.find(set => set.shortName === urlItem.shortName)
-      if (foundSet) {
+      const amountIsValid = urlItem.amount &&
+                            Number.isInteger(urlItem.amount) &&
+                            urlItem.amount >= 0
+
+      if (foundSet && amountIsValid) {
         const workType = Object.keys(sets)[idx]
         dispatchObjects.push({
           workType,
